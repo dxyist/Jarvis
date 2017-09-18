@@ -12,8 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ecnu.leon.jarvis.R;
+import com.ecnu.leon.jarvis.tasks.item.DailyTask;
+import com.ecnu.leon.jarvis.tasks.model.TaskManager;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A fragment representing a list of Items.
@@ -28,6 +33,10 @@ public class DailyTaskFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    RecyclerView recyclerView;
+
+
+    ArrayList<DailyTask> dailyTasks;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -63,27 +72,21 @@ public class DailyTaskFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new DailyTaskRecyclerViewAdapter(TaskManager.getInstance(getContext()).getDailyTasks(new Date()), mListener, getContext()));
         }
         return view;
     }
 
-
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -104,6 +107,6 @@ public class DailyTaskFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(DailyTask item);
     }
 }

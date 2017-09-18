@@ -1,12 +1,18 @@
 package com.ecnu.leon.jarvis.tasks.item;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Created by Leon on 2017/8/10.
  */
 
-public class DailyTask {
+public class DailyTask extends Task implements Serializable {
+
+    private static final long serialVersionUID = 7523967370034938905L;
+
+
     public static int TASK_STATE_UNFINISHED = 0;
     public static int TASK_STATE_FINISHED = 1;
     // 表示任务失败
@@ -17,17 +23,32 @@ public class DailyTask {
     // 写入日期，作为展示用
     private Date whiteDate;
 
+    private String whiteDateFormatString;
+
     // 任务状态
-    private int state;
+    private int taskState;
 
     // 任务价值
-    private int value;
+    private int taskValue;
 
-    public DailyTask(String content, Date whiteDate, int value) {
+    public int getTaskState() {
+        return taskState;
+    }
+
+    public int getTaskValue() {
+        return taskValue;
+    }
+
+    public DailyTask(int taskID, String content, Date whiteDate, int taskValue) {
+        super(taskID,whiteDate);
         this.content = content;
         this.whiteDate = whiteDate;
-        this.state = DailyTask.TASK_STATE_UNFINISHED;
-        this.value = value;
+        this.taskState = DailyTask.TASK_STATE_UNFINISHED;
+        this.taskValue = taskValue;
+        if (whiteDate != null) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            this.whiteDateFormatString = format.format(whiteDate);
+        }
     }
 
     public String getContent() {
@@ -46,19 +67,13 @@ public class DailyTask {
         this.whiteDate = whiteDate;
     }
 
-    public int getState() {
-        return state;
+    public String getWhiteDateFormatString() {
+        return whiteDateFormatString;
     }
 
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
+    @Override
+    protected boolean setTaskType() {
+        super.taskType = Task.DAILY_TASK_TYPE;
+        return true;
     }
 }

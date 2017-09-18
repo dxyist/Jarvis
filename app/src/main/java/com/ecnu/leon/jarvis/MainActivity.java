@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,16 +14,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.cootek.feedsnews.sdk.FeedsManager;
+import com.ecnu.leon.jarvis.news.FeedsListFragment;
+import com.ecnu.leon.jarvis.news.MockNewsUtil;
+import com.ecnu.leon.jarvis.tasks.item.DailyTask;
 import com.ecnu.leon.jarvis.tasks.model.TaskFragmentPagerAdapter;
+import com.ecnu.leon.jarvis.tasks.model.TaskManager;
 import com.ecnu.leon.jarvis.tasks.ui.DailyTaskFragment;
 import com.ecnu.leon.jarvis.tasks.ui.TaskFragment;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent;
 
-public class MainActivity extends AppCompatActivity implements TaskFragment.OnFragmentInteractionListener {
-    private ViewPager mViewPager;
+public class MainActivity extends AppCompatActivity {
 
 
-    private TextView mTextMessage;
+    private Fragment taskFragment;
+    private Fragment newsFragment;
+    private Fragment targetFragment;
+    private Fragment graphicFragment;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -30,15 +38,18 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.OnFr
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mViewPager.setCurrentItem(0);
+                case R.id.navigation_task:
+                    hideFragment(transaction);
+                    addTaskPage();
                     return true;
-                case R.id.navigation_dashboard:
-                    mViewPager.setCurrentItem(1);
+                case R.id.navigation_target:
                     return true;
-                case R.id.navigation_notifications:
-                    mViewPager.setCurrentItem(2);
+                case R.id.navigation_news:
+                    hideFragment(transaction);
+                    addNewsPage();
                     return true;
             }
             return false;
@@ -51,15 +62,61 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.OnFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        mViewPager = (ViewPager) findViewById(R.id.viewpager_main);
-        setupViewPager(mViewPager);
-
+        initData();
+        initUI();
 
     }
+
+    private void initData() {
+        FeedsManager.getIns().init(new MockNewsUtil());
+    }
+
+
+    private void initUI() {
+        initTaskFragment();
+    }
+
+    private void initTaskFragment() {
+        addTaskPage();
+    }
+
+    private void addNewsPage(){
+        //开启事务，fragment的控制是由事务来实现的
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if (newsFragment == null) {
+            newsFragment = FeedsListFragment.newInstance();
+            transaction.add(R.id.fragment_container, newsFragment);
+        }
+        //隐藏所有fragment
+        hideFragment(transaction);
+        //显示需要显示的fragment
+        transaction.show(newsFragment);
+
+        transaction.commit();
+    }
+
+    private void addTaskPage(){
+        //开启事务，fragment的控制是由事务来实现的
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if (taskFragment == null) {
+            taskFragment = TaskFragment.newInstance();
+            transaction.add(R.id.fragment_container, taskFragment);
+        }
+        //隐藏所有fragment
+        hideFragment(transaction);
+        //显示需要显示的fragment
+        transaction.show(taskFragment);
+
+        transaction.commit();
+    }
+
 
     private void setupViewPager(ViewPager viewPager) {
         FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -86,9 +143,19 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.OnFr
         viewPager.setAdapter(adapter);
     }
 
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    private void hideFragment(FragmentTransaction transaction) {
+        if (taskFragment != null) {
+            transaction.hide(taskFragment);
+        }
+        if (newsFragment != null) {
+            transaction.hide(newsFragment);
+        }
+        if (targetFragment != null) {
+            transaction.hide(targetFragment);
+        }
+        if (graphicFragment != null) {
+            transaction.hide(graphicFragment);
+        }
     }
+
 }
