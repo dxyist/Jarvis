@@ -2,12 +2,15 @@ package com.ecnu.leon.jarvis.tasks.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import com.ecnu.leon.jarvis.tasks.item.Task;
 import com.ecnu.leon.jarvis.tasks.ui.DailyTaskFragment.OnListFragmentInteractionListener;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,11 +31,11 @@ import java.util.List;
  */
 public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTaskRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DailyTask> mDailyTasks;
+    private final ArrayList<DailyTask> mDailyTasks;
     private Context mContext;
     private final OnListFragmentInteractionListener mListener;
 
-    public DailyTaskRecyclerViewAdapter(List<DailyTask> items, OnListFragmentInteractionListener listener, Context context) {
+    public DailyTaskRecyclerViewAdapter(ArrayList<DailyTask> items, OnListFragmentInteractionListener listener, Context context) {
         mDailyTasks = items;
         mListener = listener;
         mContext = context;
@@ -46,21 +50,15 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+
+        initViewHolder(holder, position);
+
         holder.mItem = mDailyTasks.get(position);
-        holder.mIdView.setText(Integer.valueOf(mDailyTasks.get(position).getTaskValue()) + ":");
-
-        holder.mIdView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, mDailyTasks.get(position).getWhiteDateFormatString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        holder.mContentView.setText(mDailyTasks.get(position).getContent());
+        holder.mContentView.setText(mDailyTasks.get(position).getTaskValue() + ":" + mDailyTasks.get(position).getContent());
         holder.mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDailyTasks.remove(position);
+                mDailyTasks.get(position).setFailed();
                 notifyDataSetChanged();
             }
         });
@@ -76,10 +74,10 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
-//                            case 0:
-//                                // 设置任务失败函数
-//                                setTaskFailed(mDailyTasks, position);
-//                                break;
+                            case 0:
+                                // 设置任务失败函数
+                                setTaskFailed(mDailyTasks, position);
+                                break;
 //
 //                            case 1:
 //                                // 修改任务
@@ -139,6 +137,185 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
     }
 
 
+    private boolean setTaskFailed(final ArrayList<DailyTask> dailyTasks, final int position)
+    {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("确认任务已经失败么，此操作不可逆！");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener()
+        {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dailyTasks.get(position).setFailed();
+                moveToBottom(dailyTasks, position);
+                dialog.dismiss();
+                notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
+        {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dailyTasks.get(position).setUnfinished();
+                moveToBottom(dailyTasks, position);
+                dialog.dismiss();
+                notifyDataSetChanged();
+            }
+        });
+        builder.create().show();
+
+        return true;
+    }
+
+
+
+
+    // 算法逻辑需要清晰化
+    private boolean moveToBottom(ArrayList<DailyTask> arrayList, int position)
+    {
+        DailyTask dailyTask = arrayList.get(position);
+        arrayList.remove(position);
+        System.out.println("调用一次");
+
+        for (int i = arrayList.size() - 1; i >= 0; i--)
+        {
+            if (arrayList.get(i).isFinished() || arrayList.get(i).isFailed())
+                continue;
+
+            // 出现了增加情况直接跳出
+            arrayList.add(i + 1, dailyTask);
+            return true;
+
+        }
+        //
+        arrayList.add(0, dailyTask);
+        return true;
+    }
+
+    private boolean moveToTop(ArrayList<DailyTask> arrayList, int position)
+    {
+        DailyTask dailyTask = arrayList.get(position);
+        arrayList.remove(position);
+
+        arrayList.add(0, dailyTask);
+        return true;
+    }
+
+
+
+
+    private void initViewHolder(final ViewHolder holder, final int position) {
+
+        String string = "";
+        string = position + 1 + "：" + mDailyTasks.get(position).getContent();
+        holder.mContentView.setText(string);
+        int value = mDailyTasks.get(position).getTaskValue();
+        int rate = mDailyTasks.get(position).getTaskPunchRate();
+        holder.dailytaskBounsValueTextview.setText(value + "");
+        holder.dailytaskPunchValueTextview.setText(rate * value + "");
+        holder.mCheckBox.setChecked(mDailyTasks.get(position).isFinished());
+
+        // 先设置好颜色
+        holder.dailytaskBounsValueTextview.setTextColor(Color.argb(255, 99, 204, 33));
+        holder.dailytaskBounsTextview.setTextColor(Color.argb(255, 99, 204, 33));
+        holder.dailytaskPunchValueTextview.setTextColor(Color.argb(255, 255, 66, 00));
+        holder.dailytaskPunchTextview.setTextColor(Color.argb(255, 255, 66, 00));
+        // 消除划线效果
+        holder.dailytaskBounsValueTextview.getPaint().setFlags(0);
+        holder.dailytaskBounsTextview.getPaint().setFlags(0);
+        holder.dailytaskPunchValueTextview.getPaint().setFlags(0);
+        holder.dailytaskPunchTextview.getPaint().setFlags(0);
+        // 抗锯齿
+        holder.dailytaskBounsValueTextview.getPaint().setAntiAlias(true);
+        holder.dailytaskBounsTextview.getPaint().setAntiAlias(true);
+        holder.dailytaskPunchValueTextview.getPaint().setAntiAlias(true);
+        holder.dailytaskPunchTextview.getPaint().setAntiAlias(true);
+
+        // 任务是否完成后的状态
+        if (mDailyTasks.get(position).isFinished()) {
+            holder.mContentView.setTextColor(Color.GRAY);
+            holder.dailytaskPunchValueTextview.setTextColor(Color.GRAY);
+            holder.dailytaskPunchTextview.setTextColor(Color.GRAY);
+
+            holder.dailytaskPunchValueTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.dailytaskPunchTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            // 设置任务难度颜色
+            switch (mDailyTasks.get(position).getTaskValue()) {
+                case 1:
+                    holder.mContentView.setTextColor(Color.argb(255, 0, 0, 0));
+                    break;
+                case 2:
+                    holder.mContentView.setTextColor(Color.argb(255, 50, 205, 50));
+                    break;
+                case 3:
+                    holder.mContentView.setTextColor(Color.argb(255, 75, 105, 255));
+                    break;
+                case 4:
+                    holder.mContentView.setTextColor(Color.argb(255, 211, 44, 230));
+                    break;
+                case 5:
+                    holder.mContentView.setTextColor(Color.argb(255, 228, 174, 57));
+                    break;
+                default:
+                    holder.mContentView.setTextColor(Color.argb(255, 0, 0, 0));
+                    break;
+            }
+
+            holder.mContentView.getPaint().setFlags(0);
+            holder.mContentView.getPaint().setAntiAlias(true);
+        }
+
+        boolean isTaskFailed = mDailyTasks.get(position).isFailed();
+        holder.mCheckBox.setEnabled(true);
+        // 先取消flag设置，以免内部属性在删除过程中影响后面的操作
+        holder.mContentView.getPaint().setFlags(0);
+        holder.mContentView.getPaint().setAntiAlias(true);
+        if (isTaskFailed) {
+            // 如果任务已经失效
+            holder.mContentView.setTextColor(Color.GRAY);
+            holder.mContentView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+
+            holder.mCheckBox.setChecked(false);
+            holder.mCheckBox.setEnabled(false);
+
+            holder.dailytaskBounsValueTextview.setTextColor(Color.GRAY);
+            holder.dailytaskBounsTextview.setTextColor(Color.GRAY);
+
+            holder.dailytaskBounsValueTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.dailytaskBounsTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
+        holder.mCheckBox.setOnClickListener(new View.OnClickListener()
+        {
+            // 不能调用外部的View
+            @Override
+            public void onClick(View v)
+            {
+
+                if (((CompoundButton) v).isChecked())
+                {
+                    mDailyTasks.get(position).setFinished();
+                    moveToBottom(mDailyTasks, position);
+                    notifyDataSetChanged();
+                } else
+                {
+                    mDailyTasks.get(position).setUnfinished();
+                    moveToBottom(mDailyTasks, position);
+                }
+                notifyDataSetChanged();
+            }
+        });
+
+
+    }
+
+
     @Override
     public int getItemCount() {
 
@@ -150,17 +327,26 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
         public final TextView mContentView;
         public final CheckBox mCheckBox;
+
+        public final TextView dailytaskBounsTextview;
+        public final TextView dailytaskBounsValueTextview;
+        public final TextView dailytaskPunchTextview;
+        public final TextView dailytaskPunchValueTextview;
         public DailyTask mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.text_task_order_number);
             mCheckBox = (CheckBox) view.findViewById(R.id.checkbox_dailytask);
             mContentView = (TextView) view.findViewById(R.id.text_dailytask_title);
+
+            dailytaskBounsTextview = (TextView) view.findViewById(R.id.text_dailytask_bouns);
+            dailytaskBounsValueTextview = (TextView) view.findViewById(R.id.text_dailytask_bouns_value);
+            dailytaskPunchTextview = (TextView) view.findViewById(R.id.text_dailytask_punch);
+            dailytaskPunchValueTextview = (TextView) view.findViewById(R.id.text_dailytask_punch_value);
+
         }
 
         @Override

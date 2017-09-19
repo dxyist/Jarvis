@@ -31,6 +31,10 @@ public class DailyTask extends Task implements Serializable {
     // 任务价值
     private int taskValue;
 
+
+    // 任务倒扣率
+    private int taskPunchRate = 1;
+
     public int getTaskState() {
         return taskState;
     }
@@ -40,7 +44,7 @@ public class DailyTask extends Task implements Serializable {
     }
 
     public DailyTask(int taskID, String content, Date whiteDate, int taskValue) {
-        super(taskID,whiteDate);
+        super(taskID, whiteDate);
         this.content = content;
         this.whiteDate = whiteDate;
         this.taskState = DailyTask.TASK_STATE_UNFINISHED;
@@ -71,9 +75,39 @@ public class DailyTask extends Task implements Serializable {
         return whiteDateFormatString;
     }
 
+    public boolean isFinished() {
+        return taskState == TASK_STATE_FINISHED;
+    }
+
+    public boolean isFailed() {
+        return taskState == TASK_STATE_FAILED;
+    }
+
+    public void setUnfinished()
+    {
+        taskState = TASK_STATE_UNFINISHED;
+    }
+    public void setFailed()
+    {
+        taskState = TASK_STATE_FAILED;
+    }
+
+    public void setFinished()
+    {
+        taskState = TASK_STATE_FINISHED;
+    }
+
     @Override
     protected boolean setTaskType() {
         super.taskType = Task.DAILY_TASK_TYPE;
         return true;
+    }
+
+    public int getTaskPunchRate() {
+        return taskPunchRate;
+    }
+
+    public void setTaskPunchRate(int taskPunchRate) {
+        this.taskPunchRate = taskPunchRate;
     }
 }
