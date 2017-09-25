@@ -3,6 +3,7 @@ package com.ecnu.leon.jarvis.tasks.ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.print.PrintHelper;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,10 +34,28 @@ import com.ecnu.leon.jarvis.tasks.item.DailyTask;
 import com.ecnu.leon.jarvis.tasks.item.Task;
 import com.ecnu.leon.jarvis.tasks.model.TaskManager;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class TaskFragment extends Fragment {
+    // 存储当前全局时间
+    private static Date currentTaskCalendar;
+
+
+    private TextView actionBarDateTextview;
+    private TextView actionBarWeekTextview;
+    private TextView actionBarTaskValueTextview;
+    private TextView actionBarLastDaysTextview;
+
+    private ImageView leftArrowImageview;
+    private ImageView rightArrowImageview;
 
     ViewPager viewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -62,6 +83,8 @@ public class TaskFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TaskManager.getInstance(getContext()).loadContent();
+
+        currentTaskCalendar = new Date();
     }
 
     @Override
@@ -75,6 +98,7 @@ public class TaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         View rootView = inflater.inflate(R.layout.fragment_task, container, false);
 
         viewPager = (ViewPager) rootView.findViewById(R.id.viewPager_task);
@@ -84,8 +108,8 @@ public class TaskFragment extends Fragment {
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        initActionBar(rootView);
 
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_task);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +178,76 @@ public class TaskFragment extends Fragment {
         return rootView;
     }
 
+    private void initActionBar(View rootView) {
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+
+        actionBarDateTextview = (TextView) rootView.findViewById(R.id.txt_actionbar_date);
+        actionBarDateTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentTaskCalendar = new Date();   //这个时间就是日期往后推一天的结果
+                refreshActionBar();
+            }
+        });
+        actionBarWeekTextview = (TextView) rootView.findViewById(R.id.txt_actionbar_week);
+        actionBarTaskValueTextview = (TextView) rootView.findViewById(R.id.text_positive_value);
+        actionBarLastDaysTextview = (TextView) rootView.findViewById(R.id.text_last_days);
+
+        leftArrowImageview = (ImageView) rootView.findViewById(R.id.txt_arrow_left);
+        leftArrowImageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(currentTaskCalendar);
+//                calendar.add(calendar.YEAR, 1);//把日期往后增加一年.整数往后推,负数往前移动
+//                calendar.add(calendar.DAY_OF_MONTH, 1);//把日期往后增加一个月.整数往后推,负数往前移动
+//
+//                calendar.add(calendar.WEEK_OF_MONTH, 1);//把日期往后增加一个月.整数往后推,负数往前移动
+                calendar.add(calendar.DATE, -1);//把日期往后增加一天.整数往后推,负数往前移动
+                currentTaskCalendar = calendar.getTime();   //这个时间就是日期往后推一天的结果
+                refreshActionBar();
+            }
+        });
+        rightArrowImageview = (ImageView) rootView.findViewById(R.id.txt_arrow_right);
+        rightArrowImageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(currentTaskCalendar);
+//                calendar.add(calendar.YEAR, 1);//把日期往后增加一年.整数往后推,负数往前移动
+//                calendar.add(calendar.DAY_OF_MONTH, 1);//把日期往后增加一个月.整数往后推,负数往前移动
+//
+//                calendar.add(calendar.WEEK_OF_MONTH, 1);//把日期往后增加一个月.整数往后推,负数往前移动
+                calendar.add(calendar.DATE, 1);//把日期往后增加一天.整数往后推,负数往前移动
+                currentTaskCalendar = calendar.getTime();   //这个时间就是日期往后推一天的结果
+                refreshActionBar();
+            }
+        });
+        refreshActionBar();
+    }
+
+    private void refreshActionBar() {
+        // 刷新日期
+        if (actionBarDateTextview != null) {
+            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            String dateString = format.format(currentTaskCalendar);
+            actionBarDateTextview.setText(dateString);
+        }
+
+        if (actionBarWeekTextview != null) {
+            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("EE", Locale.CHINESE);
+            String dateString = format.format(currentTaskCalendar);
+            actionBarWeekTextview.setText(dateString);
+        }
+
+
+    }
+
+    private void getCurrentPositive() {
+
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -207,6 +301,8 @@ public class TaskFragment extends Fragment {
             switch (position) {
                 case 0:
                     return DailyTaskFragment.newInstance(1);
+                case 1:
+                    return RoutineTaskFragment.newInstance(1);
 
             }
             return PlaceholderFragment.newInstance(position + 1);
@@ -224,7 +320,7 @@ public class TaskFragment extends Fragment {
                 case 0:
                     return "每日任务";
                 case 1:
-                    return "SECTION 2";
+                    return "日常任务";
                 case 2:
                     return "SECTION 3";
             }

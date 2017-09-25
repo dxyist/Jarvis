@@ -58,9 +58,13 @@ public class DailyTaskContainer implements Serializable {
             dailyTasksHashMap.put(dateString, arrayList);
         }
 
-
         return arrayList;
     }
+
+
+//    public int getTotalTaskValues(){
+//
+//    };
 
     public boolean save() throws IOException {
         ObjectOutputStream out = new ObjectOutputStream(context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE));

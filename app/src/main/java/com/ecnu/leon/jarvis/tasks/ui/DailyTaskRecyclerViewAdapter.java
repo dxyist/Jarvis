@@ -9,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,8 @@ import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -54,7 +58,7 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
         initViewHolder(holder, position);
 
         holder.mItem = mDailyTasks.get(position);
-        holder.mContentView.setText(mDailyTasks.get(position).getTaskValue() + ":" + mDailyTasks.get(position).getContent());
+        holder.mContentView.setText(position + 1 + ": " + mDailyTasks.get(position).getContent());
         holder.mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,20 +83,20 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
                                 setTaskFailed(mDailyTasks, position);
                                 break;
 //
-//                            case 1:
-//                                // 修改任务
-//                                amendTask(mDailyTasks, position);
-//                                break;
+                            case 1:
+                                // 修改任务
+                                amendTask(mDailyTasks, position);
+                                break;
 //
-//                            case 2:
-//                                // 删除任务
-//                                deleteTask(mDailyTasks, position);
-//                                break;
+                            case 2:
+                                // 删除任务
+                                deleteTask(mDailyTasks, position);
+                                break;
 //
-//                            case 3:
-//                                // 显示任务详情
-//                                showTaskDetails(mDailyTasks, position);
-//                                break;
+                            case 3:
+                                // 显示任务详情
+                                showTaskDetails(mDailyTasks, position);
+                                break;
 //
 //                            case 4: {
 //                                // 加入明日任务
@@ -100,20 +104,20 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
 //                                break;
 //                            }
 //
-//                            case 5: {
-//                                // 移到任务底顶部
-//                                moveToTop(mDailyTasks, position);
-//
-//                                onResume();
-//                                break;
-//                            }
-//
-//                            case 6: {
-//                                // 移到任务底部
-//                                moveToBottom(mDailyTasks, position);
-//                                onResume();
-//                                break;
-//                            }
+                            case 5: {
+                                // 移到任务底顶部
+                                moveToTop(mDailyTasks, position);
+
+                                notifyDataSetChanged();
+                                break;
+                            }
+
+                            case 6: {
+                                // 移到任务底部
+                                moveToBottom(mDailyTasks, position);
+                                notifyDataSetChanged();
+                                break;
+                            }
 //
 //                            default:
 //                                break;
@@ -124,7 +128,9 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
             }
         });
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.mView.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
@@ -137,30 +143,25 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
     }
 
 
-    private boolean setTaskFailed(final ArrayList<DailyTask> dailyTasks, final int position)
-    {
+    private boolean setTaskFailed(final ArrayList<DailyTask> dailyTasks, final int position) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage("确认任务已经失败么，此操作不可逆！");
         builder.setTitle("提示");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener()
-        {
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 dailyTasks.get(position).setFailed();
                 moveToBottom(dailyTasks, position);
                 dialog.dismiss();
                 notifyDataSetChanged();
             }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
-        {
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 dailyTasks.get(position).setUnfinished();
                 moveToBottom(dailyTasks, position);
                 dialog.dismiss();
@@ -172,18 +173,20 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
         return true;
     }
 
-
+    private boolean deleteTask(final ArrayList<DailyTask> dailyTasks, final int position) {
+        mDailyTasks.remove(mDailyTasks.get(position));
+        notifyDataSetChanged();
+        return true;
+    }
 
 
     // 算法逻辑需要清晰化
-    private boolean moveToBottom(ArrayList<DailyTask> arrayList, int position)
-    {
+    private boolean moveToBottom(ArrayList<DailyTask> arrayList, int position) {
         DailyTask dailyTask = arrayList.get(position);
         arrayList.remove(position);
         System.out.println("调用一次");
 
-        for (int i = arrayList.size() - 1; i >= 0; i--)
-        {
+        for (int i = arrayList.size() - 1; i >= 0; i--) {
             if (arrayList.get(i).isFinished() || arrayList.get(i).isFailed())
                 continue;
 
@@ -197,8 +200,7 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
         return true;
     }
 
-    private boolean moveToTop(ArrayList<DailyTask> arrayList, int position)
-    {
+    private boolean moveToTop(ArrayList<DailyTask> arrayList, int position) {
         DailyTask dailyTask = arrayList.get(position);
         arrayList.remove(position);
 
@@ -207,6 +209,115 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
     }
 
 
+//    private boolean addToTomorrow(final ArrayList<DailyTask> dailyTasks, final int position) {
+//        GregorianCalendar calendar = (GregorianCalendar) new GregorianCalendar().clone();
+//        calendar.setTimeInMillis(calendar.getTimeInMillis() + 86400 * 1000);
+//        long id = MainActivity.getTaskID();
+//        DailyTask dailyTask = new DailyTask(id, taskContainer.get(position).getName(), (GregorianCalendar) calendar.clone());
+//
+//        dailyTask.setPositiveEnergyValue(taskContainer.get(position).getPositiveEnergyValue());
+//        dailyTask.setNegativeEnergyRate(taskContainer.get(position).getNegativeEnergyRate());
+//
+//        switch (taskContainer.get(position).getTaskType()) {
+//            case Task.STEPPING_DAILY_TASK_TYPE:
+//
+//                SteppingDailyTask steppingDailyTask = new SteppingDailyTask(dailyTask.getID(), dailyTask.getName(), dailyTask.getCreateDate());
+//                steppingDailyTask.setFinishedLevel(((SteppingDailyTask) taskContainer.get(position)).getFinishedLevel());
+//                steppingDailyTask.setPositiveEnergyValue(taskContainer.get(position).getPositiveEnergyValue());
+//                steppingDailyTask.setNegativeEnergyRate(taskContainer.get(position).getNegativeEnergyRate());
+//                dailyTask = steppingDailyTask;
+//                break;
+//
+//            default:
+//                break;
+//        }
+//        MainActivity.dailyTaskContainter.addDailyTask(dailyTask);
+//        return true;
+//    }
+
+
+    private boolean showTaskDetails(final ArrayList<DailyTask> dailyTasks, final int position) {
+        Toast.makeText(
+                mContext,
+                "任务ID：" + dailyTasks.get(position).getID() + "\n" + "任务名称：" + dailyTasks.get(position).getContent() + "\n" + "任务是否完成：" + dailyTasks.get(position).isFinished() + "\n"
+                        + "任务是否失败：" + dailyTasks.get(position).isFailed(), Toast.LENGTH_SHORT).show();
+        // 追加+++
+
+        return true;
+    }
+
+    private boolean amendTask(final ArrayList<DailyTask> dailyTasks, final int position) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("修改任务");
+        View view = null;
+        // 关联XML文件，用于布局dialog
+        switch (dailyTasks.get(position).getTaskType()) {
+            case Task.DAILY_TASK_TYPE:
+                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_dailytask_add, null);
+                break;
+//            case Task.STEPPING_DAILY_TASK_TYPE:
+//                view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_add_dailytask_stepping, null);
+//
+//                break;
+
+            default:
+                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_dailytask_add, null);
+                break;
+        }
+
+
+        final EditText nameEditText = (EditText) view.findViewById(R.id.edt_dailytask_add_content);
+        nameEditText.setText(dailyTasks.get(position).getContent());
+
+        final EditText valueEditText = (EditText) view.findViewById(R.id.edt_dailytask_add_value);
+        valueEditText.setText(dailyTasks.get(position).getTaskValue() + "");
+
+//        final EditText rateEditText = (EditText) view.findViewById(R.id.edt_dailytask_add_);
+//        rateEditText.setText(taskContainer.get(position).getNegativeEnergyRate() + "");
+
+        // 自动弹出软键盘
+        nameEditText.setFocusable(true);
+        nameEditText.setFocusableInTouchMode(true);
+        nameEditText.requestFocus();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                InputMethodManager inputManager = (InputMethodManager) nameEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.showSoftInput(nameEditText, 0);
+            }
+
+        }, 300);
+
+        builder.setView(view);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String titleString = nameEditText.getText().toString().trim();
+                if (titleString.equals("")) {
+                    Toast.makeText(mContext, "输入内容不可以为空", Toast.LENGTH_SHORT).show();
+                } else {
+                    dailyTasks.get(position).setContent(nameEditText.getText().toString().trim());
+                    dailyTasks.get(position).setTaskValue(Integer.valueOf(valueEditText.getText().toString().trim()));
+//                    dailyTasks.get(position).setNegativeEnergyRate(Integer.valueOf(rateEditText.getText().toString().trim()));
+
+                    notifyDataSetChanged();
+                }
+
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 暂不处理
+            }
+        });
+        builder.show();
+        notifyDataSetChanged();
+
+        return true;
+    }
 
 
     private void initViewHolder(final ViewHolder holder, final int position) {
@@ -291,20 +402,16 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
             holder.dailytaskBounsTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
-        holder.mCheckBox.setOnClickListener(new View.OnClickListener()
-        {
+        holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
             // 不能调用外部的View
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
 
-                if (((CompoundButton) v).isChecked())
-                {
+                if (((CompoundButton) v).isChecked()) {
                     mDailyTasks.get(position).setFinished();
                     moveToBottom(mDailyTasks, position);
                     notifyDataSetChanged();
-                } else
-                {
+                } else {
                     mDailyTasks.get(position).setUnfinished();
                     moveToBottom(mDailyTasks, position);
                 }

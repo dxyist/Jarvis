@@ -28,6 +28,7 @@ public class DailyTask extends Task implements Serializable {
     // 任务状态
     private int taskState;
 
+
     // 任务价值
     private int taskValue;
 
@@ -67,6 +68,10 @@ public class DailyTask extends Task implements Serializable {
         return whiteDate;
     }
 
+    public void setTaskValue(int taskValue) {
+        this.taskValue = taskValue;
+    }
+
     public void setWhiteDate(Date whiteDate) {
         this.whiteDate = whiteDate;
     }
@@ -83,17 +88,15 @@ public class DailyTask extends Task implements Serializable {
         return taskState == TASK_STATE_FAILED;
     }
 
-    public void setUnfinished()
-    {
+    public void setUnfinished() {
         taskState = TASK_STATE_UNFINISHED;
     }
-    public void setFailed()
-    {
+
+    public void setFailed() {
         taskState = TASK_STATE_FAILED;
     }
 
-    public void setFinished()
-    {
+    public void setFinished() {
         taskState = TASK_STATE_FINISHED;
     }
 

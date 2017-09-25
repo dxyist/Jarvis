@@ -24,6 +24,8 @@ import com.ecnu.leon.jarvis.tasks.ui.DailyTaskFragment;
 import com.ecnu.leon.jarvis.tasks.ui.TaskFragment;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent;
 
+import java.util.GregorianCalendar;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -31,6 +33,21 @@ public class MainActivity extends AppCompatActivity {
     private Fragment newsFragment;
     private Fragment targetFragment;
     private Fragment graphicFragment;
+
+    // 各类 dialog
+    static final int ACTION_ADD_WEEKLYTASK_DIALOG = 0;
+    static final int ACTION_ADD_NEW_DAILYTASK_DIALOG = 1;
+    static final int ACTION_ADD_NEW_DAILYTASK_STEPPING_DIALOG = 101;
+    static final int ACTION_GET_DAILYTASK_FROM_UNREALIZEDTASK_DIALOG = 2;
+    static final int ACTION_ADD_UNREALIZEDTASK_DIALOG = 3;
+    static final int ACTION_ADD_IDEA_DIALOG = 4;
+    static final int ACTION_AMEND_ACTIONBAR_DIALOG = 5;
+    static final int ACTION_REMOVEALL_DAILYTASK_DIALOG = 6;
+    static final int ACTION_ADD_ROUTINETASK_DIALOG = 7;
+    static final int ACTION_CURRENT_DATE_CHANGE_DIALOG = 8;
+
+    public static GregorianCalendar latelyBaginCalendar = new GregorianCalendar(2017, 5, 1);
+    private static long latelyBaginCalendarMill;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -77,13 +94,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initUI() {
         initTaskFragment();
+
+    }
+
+    private void initActionbar() {
+
     }
 
     private void initTaskFragment() {
         addTaskPage();
     }
 
-    private void addNewsPage(){
+    private void addNewsPage() {
         //开启事务，fragment的控制是由事务来实现的
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -100,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private void addTaskPage(){
+    private void addTaskPage() {
         //开启事务，fragment的控制是由事务来实现的
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
