@@ -12,4 +12,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.ecnu.leon.jarvis.tasks.ui.DailyTaskFragment"
-    tools:listitem="@layout/fragment_item" />
+    tools:listitem="@layout/item_dailytask" />

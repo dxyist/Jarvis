@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,8 +46,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TaskFragment extends Fragment {
-    // 存储当前全局时间
-    private static Date currentTaskCalendar;
 
 
     private TextView actionBarDateTextview;
@@ -58,6 +57,7 @@ public class TaskFragment extends Fragment {
     private ImageView rightArrowImageview;
 
     ViewPager viewPager;
+    int currentPosition;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
 
@@ -84,7 +84,6 @@ public class TaskFragment extends Fragment {
         super.onCreate(savedInstanceState);
         TaskManager.getInstance(getContext()).loadContent();
 
-        currentTaskCalendar = new Date();
     }
 
     @Override
@@ -105,6 +104,25 @@ public class TaskFragment extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
 
+        currentPosition = viewPager.getCurrentItem();
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPosition = position;
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -115,60 +133,134 @@ public class TaskFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
-                final View tempView = View
-                        .inflate(getActivity(), R.layout.dlg_dailytask_add, null);
-                builder.setView(tempView);
-                builder.setCancelable(true);
-                final AlertDialog dialog = builder.create();
 
-                final EditText titleEditText = (EditText) tempView.findViewById(R.id.edt_dailytask_add_content);
-                // 自动弹出软键盘
-                titleEditText.setFocusable(true);
-                titleEditText.setFocusableInTouchMode(true);
-                titleEditText.requestFocus();
-                Timer timer = new Timer();
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    public void run() {
-                        InputMethodManager inputManager = (InputMethodManager) titleEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        inputManager.showSoftInput(titleEditText, 0);
+                switch (viewPager.getCurrentItem()) {
+                    case 0: {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
+                        final View tempView = View
+                                .inflate(getActivity(), R.layout.dlg_dailytask_add, null);
+                        builder.setView(tempView);
+                        builder.setCancelable(true);
+                        final AlertDialog dialog = builder.create();
+
+                        final EditText titleEditText = (EditText) tempView.findViewById(R.id.edt_dailytask_add_content);
+                        // 自动弹出软键盘
+                        titleEditText.setFocusable(true);
+                        titleEditText.setFocusableInTouchMode(true);
+                        titleEditText.requestFocus();
+                        Timer timer = new Timer();
+                        timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            public void run() {
+                                InputMethodManager inputManager = (InputMethodManager) titleEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                inputManager.showSoftInput(titleEditText, 0);
+                            }
+                        }, 400);
+
+
+                        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            public void onShow(DialogInterface dialog) {
+                                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.showSoftInput((EditText) tempView.findViewById(R.id.edt_dailytask_add_content), InputMethodManager.SHOW_IMPLICIT);
+                            }
+                        });
+
+
+                        ((Button) tempView.findViewById(R.id.btn_confirm)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String content = titleEditText.getText().toString().trim();
+
+                                int value = Integer.valueOf(((EditText) tempView.findViewById(R.id.edt_dailytask_add_value)).getText().toString().trim());
+                                TaskManager.getInstance(getContext()).addNewDailyTask(content, value);
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                        ((Button) tempView.findViewById(R.id.btn_cancel)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        //取消或确定按钮监听事件处理
+                        dialog.show();
                     }
-                }, 400);
+                    break;
+
+                    case 1: {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
+                        final View tempView = View
+                                .inflate(getActivity(), R.layout.dlg_routine_add, null);
+                        builder.setView(tempView);
+                        builder.setCancelable(true);
+                        final AlertDialog dialog = builder.create();
+
+                        final EditText titleEditText = (EditText) tempView.findViewById(R.id.edt_routineTask_add_content);
+                        // 自动弹出软键盘
+                        titleEditText.setFocusable(true);
+                        titleEditText.setFocusableInTouchMode(true);
+                        titleEditText.requestFocus();
+                        Timer timer = new Timer();
+                        timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            public void run() {
+                                InputMethodManager inputManager = (InputMethodManager) titleEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                inputManager.showSoftInput(titleEditText, 0);
+                            }
+                        }, 400);
 
 
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                    public void onShow(DialogInterface dialog) {
-                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.showSoftInput((EditText) tempView.findViewById(R.id.edt_dailytask_add_content), InputMethodManager.SHOW_IMPLICIT);
+                        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            public void onShow(DialogInterface dialog) {
+                                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.showSoftInput((EditText) tempView.findViewById(R.id.edt_routineTask_add_content), InputMethodManager.SHOW_IMPLICIT);
+                            }
+                        });
+
+
+                        ((Button) tempView.findViewById(R.id.btn_confirm)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String content = titleEditText.getText().toString().trim();
+
+                                int value = Integer.valueOf(((EditText) tempView.findViewById(R.id.edt_routineTask_add_value)).getText().toString().trim());
+                                Boolean[] weeks = new Boolean[8];
+                                weeks[1] = ((CheckBox) tempView.findViewById(R.id.checkbox_routineTask_week1)).isChecked();
+                                weeks[2] = ((CheckBox) tempView.findViewById(R.id.checkbox_routineTask_week2)).isChecked();
+                                weeks[3] = ((CheckBox) tempView.findViewById(R.id.checkbox_routineTask_week3)).isChecked();
+                                weeks[4] = ((CheckBox) tempView.findViewById(R.id.checkbox_routineTask_week4)).isChecked();
+                                weeks[5] = ((CheckBox) tempView.findViewById(R.id.checkbox_routineTask_week5)).isChecked();
+                                weeks[6] = ((CheckBox) tempView.findViewById(R.id.checkbox_routineTask_week6)).isChecked();
+                                weeks[7] = ((CheckBox) tempView.findViewById(R.id.checkbox_routineTask_week7)).isChecked();
+
+                                TaskManager.getInstance(getContext()).addNewRoutineTask(content, value, weeks);
+                                refreshFragment();
+                                viewPager.setCurrentItem(currentPosition);
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                        ((Button) tempView.findViewById(R.id.btn_cancel)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        //取消或确定按钮监听事件处理
+                        dialog.show();
                     }
-                });
-
-
-                ((Button) tempView.findViewById(R.id.btn_confirm)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String content = titleEditText.getText().toString().trim();
-
-                        int value = Integer.valueOf(((EditText) tempView.findViewById(R.id.edt_dailytask_add_value)).getText().toString().trim());
-                        TaskManager.getInstance(getContext()).addNewDailyTask(content, value);
-                        viewPager.getAdapter().notifyDataSetChanged();
-                        dialog.dismiss();
-
-                    }
-                });
-
-                ((Button) tempView.findViewById(R.id.btn_cancel)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                //取消或确定按钮监听事件处理
-                dialog.show();
+                    break;
+                }
 
 
             }
@@ -185,12 +277,20 @@ public class TaskFragment extends Fragment {
         actionBarDateTextview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentTaskCalendar = new Date();   //这个时间就是日期往后推一天的结果
+                TaskManager.currentTaskCalendar = new Date();   //这个时间就是日期往后推一天的结果
                 refreshActionBar();
+                refreshFragment();
+                viewPager.setCurrentItem(currentPosition);
             }
         });
         actionBarWeekTextview = (TextView) rootView.findViewById(R.id.txt_actionbar_week);
         actionBarTaskValueTextview = (TextView) rootView.findViewById(R.id.text_positive_value);
+        actionBarTaskValueTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshActionBar();
+            }
+        });
         actionBarLastDaysTextview = (TextView) rootView.findViewById(R.id.text_last_days);
 
         leftArrowImageview = (ImageView) rootView.findViewById(R.id.txt_arrow_left);
@@ -198,14 +298,17 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Calendar calendar = new GregorianCalendar();
-                calendar.setTime(currentTaskCalendar);
+                calendar.setTime(TaskManager.currentTaskCalendar);
 //                calendar.add(calendar.YEAR, 1);//把日期往后增加一年.整数往后推,负数往前移动
 //                calendar.add(calendar.DAY_OF_MONTH, 1);//把日期往后增加一个月.整数往后推,负数往前移动
 //
 //                calendar.add(calendar.WEEK_OF_MONTH, 1);//把日期往后增加一个月.整数往后推,负数往前移动
                 calendar.add(calendar.DATE, -1);//把日期往后增加一天.整数往后推,负数往前移动
-                currentTaskCalendar = calendar.getTime();   //这个时间就是日期往后推一天的结果
+                TaskManager.currentTaskCalendar = calendar.getTime();   //这个时间就是日期往后推一天的结果
                 refreshActionBar();
+                refreshFragment();
+                viewPager.setCurrentItem(currentPosition);
+
             }
         });
         rightArrowImageview = (ImageView) rootView.findViewById(R.id.txt_arrow_right);
@@ -213,14 +316,16 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Calendar calendar = new GregorianCalendar();
-                calendar.setTime(currentTaskCalendar);
+                calendar.setTime(TaskManager.currentTaskCalendar);
 //                calendar.add(calendar.YEAR, 1);//把日期往后增加一年.整数往后推,负数往前移动
 //                calendar.add(calendar.DAY_OF_MONTH, 1);//把日期往后增加一个月.整数往后推,负数往前移动
 //
 //                calendar.add(calendar.WEEK_OF_MONTH, 1);//把日期往后增加一个月.整数往后推,负数往前移动
                 calendar.add(calendar.DATE, 1);//把日期往后增加一天.整数往后推,负数往前移动
-                currentTaskCalendar = calendar.getTime();   //这个时间就是日期往后推一天的结果
+                TaskManager.currentTaskCalendar = calendar.getTime();   //这个时间就是日期往后推一天的结果
                 refreshActionBar();
+                refreshFragment();
+                viewPager.setCurrentItem(currentPosition);
             }
         });
         refreshActionBar();
@@ -230,14 +335,19 @@ public class TaskFragment extends Fragment {
         // 刷新日期
         if (actionBarDateTextview != null) {
             java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            String dateString = format.format(currentTaskCalendar);
+            String dateString = format.format(TaskManager.currentTaskCalendar);
             actionBarDateTextview.setText(dateString);
         }
 
         if (actionBarWeekTextview != null) {
             java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("EE", Locale.CHINESE);
-            String dateString = format.format(currentTaskCalendar);
+            String dateString = format.format(TaskManager.currentTaskCalendar);
             actionBarWeekTextview.setText(dateString);
+        }
+
+        if (actionBarTaskValueTextview != null) {
+
+            actionBarTaskValueTextview.setText(TaskManager.getInstance(getContext()).getTotalValue() + "");
         }
 
 
@@ -245,6 +355,11 @@ public class TaskFragment extends Fragment {
 
     private void getCurrentPositive() {
 
+    }
+
+    public void refreshFragment() {
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        viewPager.setAdapter(mSectionsPagerAdapter);
     }
 
 

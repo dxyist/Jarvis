@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.tasks.item.DailyTask;
+import com.ecnu.leon.jarvis.tasks.item.Task;
 import com.ecnu.leon.jarvis.tasks.model.TaskManager;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
@@ -78,7 +79,7 @@ public class DailyTaskFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new DailyTaskRecyclerViewAdapter(TaskManager.getInstance(getContext()).getDailyTasks(new Date()), mListener, getContext()));
+            recyclerView.setAdapter(new DailyTaskRecyclerViewAdapter(TaskManager.getInstance(getContext()).getDailyTasks(TaskManager.currentTaskCalendar), mListener, getContext()));
         }
         return view;
     }

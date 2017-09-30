@@ -11,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ecnu.leon.jarvis.R;
+import com.ecnu.leon.jarvis.tasks.item.RoutineTask;
+import com.ecnu.leon.jarvis.tasks.model.TaskManager;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,7 +73,7 @@ public class RoutineTaskFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyRoutineTaskRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyRoutineTaskRecyclerViewAdapter(TaskManager.getInstance(getContext()).getRoutineTasks(TaskManager.currentTaskCalendar), mListener,getContext()));
         }
         return view;
     }

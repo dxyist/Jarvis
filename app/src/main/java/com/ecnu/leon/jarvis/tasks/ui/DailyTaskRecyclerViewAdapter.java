@@ -24,7 +24,6 @@ import com.ecnu.leon.jarvis.tasks.ui.DailyTaskFragment.OnListFragmentInteraction
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,7 +47,7 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item, parent, false);
+                .inflate(R.layout.item_dailytask, parent, false);
         return new ViewHolder(view);
     }
 

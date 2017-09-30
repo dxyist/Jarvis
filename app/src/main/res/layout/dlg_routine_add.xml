@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <RelativeLayout
+        android:layout_width="280dp"
+        android:layout_height="250dp"
+        android:background="@drawable/shape_button_cancel_dailytask_add_background"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/text_routineTask_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:text="日常任務"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_routineTask_add_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_routineTask_add_title"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="任務名" />
+
+        <TextView
+            android:id="@+id/text_routineTask_add_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_routineTask_add_content"
+            android:text=" 正能量值:"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/layout_weekday_check"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/text_routineTask_add_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:checked="true"
+                android:text="一"
+                android:id="@+id/checkbox_routineTask_week2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:checked="true"
+                android:text="二"
+                android:id="@+id/checkbox_routineTask_week3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:checked="true"
+
+                android:text="三"
+                android:id="@+id/checkbox_routineTask_week4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:checked="true"
+                android:text="四"
+                android:id="@+id/checkbox_routineTask_week5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:checked="true"
+                android:text="五"
+                android:id="@+id/checkbox_routineTask_week6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/layout_weekday_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:checked="true"
+                android:text="六"
+                android:id="@+id/checkbox_routineTask_week7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:checked="true"
+                android:text="日"
+                android:id="@+id/checkbox_routineTask_week1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edt_routineTask_add_value"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text_routineTask_add_value"
+            android:layout_alignBottom="@+id/text_routineTask_add_value"
+            android:layout_alignParentEnd="true"
+            android:inputType="number"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="106dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/shape_button_cancel_dailytask_add_background"
+            android:text="取消"
+            android:textColor="#4d4d4d" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="106dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/btn_cancel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/shape_button_confirm_dailytask_add_background"
+            android:text="确定"
+            android:textColor="#03a9f4" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
