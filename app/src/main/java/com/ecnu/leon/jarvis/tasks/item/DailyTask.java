@@ -113,4 +113,18 @@ public class DailyTask extends Task implements Serializable {
     public void setTaskPunchRate(int taskPunchRate) {
         this.taskPunchRate = taskPunchRate;
     }
+
+    public int getResultValue() {
+        if (taskState == TASK_STATE_FAILED)
+        {
+            return -(this.taskValue * this.taskPunchRate);
+        }
+        if (taskState == TASK_STATE_FINISHED)
+        {
+            return this.taskValue;
+        }
+
+        return 0;
+
+    }
 }

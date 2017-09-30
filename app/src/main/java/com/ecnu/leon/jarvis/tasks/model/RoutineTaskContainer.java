@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -40,15 +41,28 @@ public class RoutineTaskContainer implements Serializable {
         routineTasksArray.add(routineTask);
     }
 
-    public ArrayList<RoutineTask> getRoutineTaskList() {
+    public ArrayList<RoutineTask> getRoutineTaskList(Date date) {
 
+        ArrayList<RoutineTask> tasks = new ArrayList<>();
 
         if (routineTasksArray == null) {
             routineTasksArray = new ArrayList<RoutineTask>();
             // 保证对象的传递性，这样在加入数据的时候可以调用刷
         }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        // 把合法的任务填写进去
+        for (int i = 0; i < routineTasksArray.size(); i++) {
+            if (routineTasksArray.get(i).getCreateDate().before(date)) {
+                // 如果星期数组为允许表示开启
+                if (routineTasksArray.get(i).getDaysOfWeek()[calendar.get(Calendar.DAY_OF_WEEK)]) {
+                    tasks.add(routineTasksArray.get(i));
+                }
+            }
+        }
 
-        return routineTasksArray;
+
+        return tasks;
     }
 
 

@@ -3,6 +3,7 @@ package com.ecnu.leon.jarvis.tasks.item;
 import android.content.Intent;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +24,10 @@ public class RoutineTask extends Task implements Serializable {
     private String content;
     private int taskValue;
 
-    private int[] daysOfWeek = {};
+    private Boolean[] daysOfWeek = {};
 
     // 存储任务状态
-    private HashMap<String,Integer> taskStatuses;
+    private HashMap<String, Integer> taskStatuses;
 
     /**
      * 必须传入一个名称和任务ID
@@ -34,8 +35,10 @@ public class RoutineTask extends Task implements Serializable {
      * @param taskID
      * @param createCalendar
      */
-    public RoutineTask(int taskID, Date createCalendar,int[] daysOfWeek) {
+    public RoutineTask(int taskID, String content, int value, Date createCalendar, Boolean[] daysOfWeek) {
         super(taskID, createCalendar);
+        this.content = content;
+        this.taskValue = value;
         this.daysOfWeek = daysOfWeek.clone();
         this.taskStatuses = new HashMap<>();
 
@@ -46,5 +49,66 @@ public class RoutineTask extends Task implements Serializable {
     protected boolean setTaskType() {
         super.taskType = Task.ROUTINE_TASK_TYPE;
         return true;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getTaskValue() {
+        return taskValue;
+    }
+
+    public void setTaskValue(int taskValue) {
+        this.taskValue = taskValue;
+    }
+
+    public boolean isFinished(Date currentDate) {
+
+        String key = "";
+        if (currentDate != null) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            key = format.format(currentDate);
+        }
+
+        if (taskStatuses.containsKey(key) && taskStatuses.get(key) == 1)
+        {
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
+    public void setFinished(Date currentDate) {
+        String key = "";
+        if (currentDate != null) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            key = format.format(currentDate);
+        }
+
+        taskStatuses.put(key, 1);
+    }
+
+    public void setUnfinished(Date currentDate) {
+        String key = "";
+        if (currentDate != null) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            key = format.format(currentDate);
+        }
+
+        taskStatuses.put(key, 0);
+    }
+
+    public Boolean[] getDaysOfWeek() {
+        return daysOfWeek;
+    }
+
+    public void setDaysOfWeek(Boolean[] daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
     }
 }
