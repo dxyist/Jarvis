@@ -11,5 +11,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.ecnu.leon.jarvis.tasks.ui.DailyTaskFragment"
+    tools:context="com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskFragment"
     tools:listitem="@layout/item_dailytask" />

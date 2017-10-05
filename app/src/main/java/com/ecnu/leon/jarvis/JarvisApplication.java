@@ -5,7 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.cootek.feedsnews.sdk.FeedsManager;
-import com.ecnu.leon.jarvis.news.MockNewsUtil;
+import com.ecnu.leon.jarvis.model.news.MockNewsUtil;
 
 public class JarvisApplication extends Application {
     @SuppressLint("StaticFieldLeak")

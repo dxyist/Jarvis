@@ -1,20 +1,17 @@
-package com.ecnu.leon.jarvis.tasks.model;
+package com.ecnu.leon.jarvis.model.task.routinetask;
 
 
 import android.content.Context;
 
-import com.ecnu.leon.jarvis.tasks.item.DailyTask;
-import com.ecnu.leon.jarvis.tasks.item.RoutineTask;
+import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTask;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Created by Leon on 2017/9/25.

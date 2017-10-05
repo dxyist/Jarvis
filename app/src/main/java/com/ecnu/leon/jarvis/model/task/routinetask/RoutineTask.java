@@ -1,12 +1,11 @@
-package com.ecnu.leon.jarvis.tasks.item;
+package com.ecnu.leon.jarvis.model.task.routinetask;
 
-import android.content.Intent;
+import com.ecnu.leon.jarvis.model.task.Task;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Leon on 2017/9/25.

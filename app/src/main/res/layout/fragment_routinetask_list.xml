@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.ecnu.leon.jarvis.tasks.ui.RoutineTaskFragment"
+    tools:context="com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskFragment"
     tools:listitem="@layout/item_routinetask" />

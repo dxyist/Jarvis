@@ -6,10 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 
-import com.ecnu.leon.jarvis.tasks.item.DailyTask;
+import com.ecnu.leon.jarvis.model.task.dailytask.DailyTask;
 
 import java.util.Date;
 

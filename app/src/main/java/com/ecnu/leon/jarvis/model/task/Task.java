@@ -1,4 +1,4 @@
-package com.ecnu.leon.jarvis.tasks.item;
+package com.ecnu.leon.jarvis.model.task;
 
 import java.io.Serializable;
 import java.util.Date;

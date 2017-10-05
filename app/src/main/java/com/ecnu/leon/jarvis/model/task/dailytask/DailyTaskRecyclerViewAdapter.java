@@ -1,4 +1,4 @@
-package com.ecnu.leon.jarvis.tasks.ui;
+package com.ecnu.leon.jarvis.model.task.dailytask;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,10 +18,7 @@ import android.widget.Toast;
 
 import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.Utils.DialogUtil;
-import com.ecnu.leon.jarvis.tasks.item.DailyTask;
-import com.ecnu.leon.jarvis.tasks.item.Task;
-import com.ecnu.leon.jarvis.tasks.ui.DailyTaskFragment.OnListFragmentInteractionListener;
-import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
+import com.ecnu.leon.jarvis.model.task.Task;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -29,16 +26,16 @@ import java.util.TimerTask;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link DailyTaskFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTaskRecyclerViewAdapter.ViewHolder> {
 
     private final ArrayList<DailyTask> mDailyTasks;
     private Context mContext;
-    private final OnListFragmentInteractionListener mListener;
+    private final DailyTaskFragment.OnListFragmentInteractionListener mListener;
 
-    public DailyTaskRecyclerViewAdapter(ArrayList<DailyTask> items, OnListFragmentInteractionListener listener, Context context) {
+    public DailyTaskRecyclerViewAdapter(ArrayList<DailyTask> items, DailyTaskFragment.OnListFragmentInteractionListener listener, Context context) {
         mDailyTasks = items;
         mListener = listener;
         mContext = context;

@@ -1,14 +1,12 @@
-package com.ecnu.leon.jarvis.tasks.model;
+package com.ecnu.leon.jarvis.model.task.dailytask;
 
 import android.content.Context;
 import android.widget.Toast;
 
-import com.ecnu.leon.jarvis.JarvisApplication;
 import com.ecnu.leon.jarvis.Utils.PrefKeys;
-import com.ecnu.leon.jarvis.Utils.PrefUtil;
 import com.ecnu.leon.jarvis.Utils.PrefUtils;
-import com.ecnu.leon.jarvis.tasks.item.DailyTask;
-import com.ecnu.leon.jarvis.tasks.item.RoutineTask;
+import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTask;
+import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskContainer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -92,7 +90,7 @@ public class TaskManager {
     public int getTotalValue() {
         int value = 0;
 
-        value += dailyTaskContainer.getTotalValue();
+//        value += dailyTaskContainer.getTotalValue();
 //        value += routineTaskContainer.get(date);
 
         return value;

@@ -1,10 +1,10 @@
-package com.ecnu.leon.jarvis.tasks.model;
+package com.ecnu.leon.jarvis.model.task;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.ecnu.leon.jarvis.tasks.ui.DailyTaskFragment;
+import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskFragment;
 
 /**
  * Created by Leon on 2017/8/10.

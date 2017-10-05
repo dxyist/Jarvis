@@ -1,28 +1,19 @@
 package com.ecnu.leon.jarvis;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.cootek.feedsnews.sdk.FeedsManager;
-import com.ecnu.leon.jarvis.news.FeedsListFragment;
-import com.ecnu.leon.jarvis.news.MockNewsUtil;
-import com.ecnu.leon.jarvis.tasks.item.DailyTask;
-import com.ecnu.leon.jarvis.tasks.model.TaskFragmentPagerAdapter;
-import com.ecnu.leon.jarvis.tasks.model.TaskManager;
-import com.ecnu.leon.jarvis.tasks.ui.DailyTaskFragment;
-import com.ecnu.leon.jarvis.tasks.ui.TaskFragment;
-import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent;
+import com.ecnu.leon.jarvis.model.news.FeedsListFragment;
+import com.ecnu.leon.jarvis.model.news.MockNewsUtil;
+import com.ecnu.leon.jarvis.model.task.TaskFragment;
 
 import java.util.GregorianCalendar;
 

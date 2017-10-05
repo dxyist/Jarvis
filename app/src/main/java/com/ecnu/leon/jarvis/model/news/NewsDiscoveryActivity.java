@@ -1,4 +1,4 @@
-package com.ecnu.leon.jarvis.news;
+package com.ecnu.leon.jarvis.model.news;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

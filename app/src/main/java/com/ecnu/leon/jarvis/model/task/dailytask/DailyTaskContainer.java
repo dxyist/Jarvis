@@ -1,22 +1,16 @@
-package com.ecnu.leon.jarvis.tasks.model;
+package com.ecnu.leon.jarvis.model.task.dailytask;
 
 import android.content.Context;
 import android.widget.Toast;
-
-import com.ecnu.leon.jarvis.tasks.item.DailyTask;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by Leon on 2017/9/4.
@@ -124,38 +118,38 @@ public class DailyTaskContainer implements Serializable {
 
 
 
-    public int getTotalValue() {
-        int totalValue = 0;
-        for (Map.Entry<String, ArrayList<DailyTask>> entry : dailyTasksHashMap.entrySet()) {
-
-            Date date = null;
-            try {
-                // Fri Feb 24 00:00:00 CST 2012
-                date = format.parse(entry.getKey());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            // 2012-02-24
-//            date = java.sql.Date.valueOf(str);
-
-            totalValue += getOneDayResultValue(date);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            String dateString = format.format(new Date());
-
-            String nowDateString = CalendarUtil.gregorianCalendarToDateString(new GregorianCalendar());
-            String lastedBeginDateString = CalendarUtil.gregorianCalendarToDateString(MainActivity.latelyBaginCalendar);
-
-            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-            String targetDateString = entry.getKey();
-            // 可以计算的区域区间在开始执行日到当前日期之前
-            if (!CalendarUtil.firstDateIsLaterThanSecondOne(targetDateString,nowDateString) && !CalendarUtil.firstDateIsLa                                                                                                                                                                    terThanSecondOne(lastedBeginDateString, targetDateString))
-            {
-                totalValue += getOneDayResultValue(entry.getValue());
-            }
-        }
-
-        return totalValue;
-    }
+//    public int getTotalValue() {
+//        int totalValue = 0;
+//        for (Map.Entry<String, ArrayList<DailyTask>> entry : dailyTasksHashMap.entrySet()) {
+//
+//            Date date = null;
+//            try {
+//                // Fri Feb 24 00:00:00 CST 2012
+//                date = format.parse(entry.getKey());
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            // 2012-02-24
+////            date = java.sql.Date.valueOf(str);
+//
+//            totalValue += getOneDayResultValue(date);
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//            String dateString = format.format(new Date());
+//
+////            String nowDateString = CalendarUtil.gregorianCalendarToDateString(new GregorianCalendar());
+////            String lastedBeginDateString = CalendarUtil.gregorianCalendarToDateString(MainActivity.latelyBaginCalendar);
+////
+////            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+////            String targetDateString = entry.getKey();
+////            // 可以计算的区域区间在开始执行日到当前日期之前
+////            if (!CalendarUtil.firstDateIsLaterThanSecondOne(targetDateString,nowDateString) && !CalendarUtil.firstDateIsLa                                                                                                                                                                    terThanSecondOne(lastedBeginDateString, targetDateString))
+////            {
+////                totalValue += getOneDayResultValue(entry.getValue());
+////            }
+//        }
+//
+//        return totalValue;
+//    }
 
 
     public int getOneDayMaximumPossibleValue(Date date) {

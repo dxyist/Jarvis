@@ -1,4 +1,4 @@
-package com.ecnu.leon.jarvis.tasks.ui;
+package com.ecnu.leon.jarvis.model.task.dailytask;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,14 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ecnu.leon.jarvis.R;
-import com.ecnu.leon.jarvis.tasks.item.DailyTask;
-import com.ecnu.leon.jarvis.tasks.item.Task;
-import com.ecnu.leon.jarvis.tasks.model.TaskManager;
-import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent;
-import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * A fragment representing a list of Items.

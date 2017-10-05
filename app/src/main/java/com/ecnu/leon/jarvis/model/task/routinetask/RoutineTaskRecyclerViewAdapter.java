@@ -1,8 +1,7 @@
-package com.ecnu.leon.jarvis.tasks.ui;
+package com.ecnu.leon.jarvis.model.task.routinetask;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,26 +11,24 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.ecnu.leon.jarvis.R;
-import com.ecnu.leon.jarvis.tasks.item.RoutineTask;
-import com.ecnu.leon.jarvis.tasks.model.TaskManager;
-import com.ecnu.leon.jarvis.tasks.ui.RoutineTaskFragment.OnListFragmentInteractionListener;
+import com.ecnu.leon.jarvis.model.task.dailytask.TaskManager;
 import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link RoutineTaskFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyRoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyRoutineTaskRecyclerViewAdapter.ViewHolder> {
+public class RoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<RoutineTaskRecyclerViewAdapter.ViewHolder> {
 
     private final ArrayList<RoutineTask> routineTasks;
     private Context mContext;
 
-    private final OnListFragmentInteractionListener mListener;
+    private final RoutineTaskFragment.OnListFragmentInteractionListener mListener;
 
-    public MyRoutineTaskRecyclerViewAdapter(ArrayList<RoutineTask> items, OnListFragmentInteractionListener listener, Context context) {
+    public RoutineTaskRecyclerViewAdapter(ArrayList<RoutineTask> items, RoutineTaskFragment.OnListFragmentInteractionListener listener, Context context) {
         routineTasks = items;
         mContext = context;
         mListener = listener;

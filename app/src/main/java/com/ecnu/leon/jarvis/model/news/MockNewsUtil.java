@@ -1,4 +1,4 @@
-package com.ecnu.leon.jarvis.news;
+package com.ecnu.leon.jarvis.model.news;
 
 import android.content.Context;
 import android.content.Intent;

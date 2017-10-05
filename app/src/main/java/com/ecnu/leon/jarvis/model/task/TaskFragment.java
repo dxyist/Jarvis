@@ -1,22 +1,17 @@
-package com.ecnu.leon.jarvis.tasks.ui;
+package com.ecnu.leon.jarvis.model.task;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.icu.text.SimpleDateFormat;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.print.PrintHelper;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -25,19 +20,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ecnu.leon.jarvis.JarvisApplication;
 import com.ecnu.leon.jarvis.R;
-import com.ecnu.leon.jarvis.Utils.PrefKeys;
-import com.ecnu.leon.jarvis.Utils.PrefUtil;
-import com.ecnu.leon.jarvis.tasks.item.DailyTask;
-import com.ecnu.leon.jarvis.tasks.item.Task;
-import com.ecnu.leon.jarvis.tasks.model.TaskManager;
+import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskFragment;
+import com.ecnu.leon.jarvis.model.task.dailytask.TaskManager;
+import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskFragment;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -426,7 +414,7 @@ public class TaskFragment extends Fragment {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -437,7 +425,9 @@ public class TaskFragment extends Fragment {
                 case 1:
                     return "日常任务";
                 case 2:
-                    return "SECTION 3";
+                    return "目标任务";
+                case 3:
+                    return "消费页面";
             }
             return null;
         }
