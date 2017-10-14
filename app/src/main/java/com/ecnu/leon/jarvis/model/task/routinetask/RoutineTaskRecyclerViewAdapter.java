@@ -2,6 +2,7 @@ package com.ecnu.leon.jarvis.model.task.routinetask;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +13,12 @@ import android.widget.TextView;
 
 import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.model.task.dailytask.TaskManager;
-import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link RoutineTaskFragment.OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class RoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<RoutineTaskRecyclerViewAdapter.ViewHolder> {
 
     private final ArrayList<RoutineTask> routineTasks;
@@ -43,6 +41,7 @@ public class RoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<Routine
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        TaskManager.setDateChanged(true);
 
         initViewHolder(holder, position);
 
@@ -123,6 +122,22 @@ public class RoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<Routine
                 notifyDataSetChanged();
             }
         });
+
+        // 之前日期不可修改
+//        if (TaskManager.currentTaskCalendar.before(new Date())) {
+//            // 如果任务已经失效
+//            holder.mContentView.setTextColor(Color.GRAY);
+//            holder.mContentView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+//
+//            holder.mCheckBox.setChecked(false);
+//            holder.mCheckBox.setEnabled(false);
+//
+//            holder.routineTaskBounsTextview.setTextColor(Color.GRAY);
+//            holder.routineTaskBounsTextview.setTextColor(Color.GRAY);
+//
+//            holder.routineTaskBounsValueTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+//            holder.routineTaskBounsValueTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+//        }
     }
 
     @Override

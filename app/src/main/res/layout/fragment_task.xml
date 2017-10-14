@@ -29,6 +29,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:visibility="gone"
             android:text="_??"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -36,12 +37,13 @@
 
         <ImageView
             android:id="@+id/txt_arrow_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
             android:layout_toLeftOf="@+id/txt_actionbar_date"
-            android:src="@drawable/ic_task_left_arrow" />
+            android:scaleType="fitXY"
+            android:src="@drawable/actionbar_dailytask_left" />
 
 
         <TextView
@@ -52,38 +54,69 @@
             android:layout_marginTop="6dp"
             android:text="2017-08-28"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/txt_actionbar_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="26dp"
             android:text="周四"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/txt_actionbar_day_diff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="(今天)"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
 
         <ImageView
             android:id="@+id/txt_arrow_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:layout_toRightOf="@+id/txt_actionbar_date"
-            android:src="@drawable/ic_task_right_arrow" />
+            android:src="@drawable/actionbar_dailytask_right" />
 
 
         <TextView
-            android:id="@+id/text_positive_value"
+            android:id="@+id/text_total_positive_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="6dp"
             android:text="20$"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/text_today_positive_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:layout_toLeftOf="@+id/text_today_positive_index"
+            android:text="20$"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/text_today_positive_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="30dp"
+            android:text="点正能量"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

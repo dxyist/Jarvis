@@ -19,16 +19,13 @@ import android.widget.Toast;
 import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.Utils.DialogUtil;
 import com.ecnu.leon.jarvis.model.task.Task;
+import com.ecnu.leon.jarvis.model.task.TaskFragment;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link DailyTaskFragment.OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTaskRecyclerViewAdapter.ViewHolder> {
 
     private final ArrayList<DailyTask> mDailyTasks;
@@ -50,18 +47,18 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
+        TaskManager.setDateChanged(true);
         initViewHolder(holder, position);
 
         holder.mItem = mDailyTasks.get(position);
         holder.mContentView.setText(position + 1 + ": " + mDailyTasks.get(position).getContent());
-        holder.mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDailyTasks.get(position).setFailed();
-                notifyDataSetChanged();
-            }
-        });
+//        holder.mContentView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mDailyTasks.get(position).setFailed();
+//                notifyDataSetChanged();
+//            }
+//        });
 
         holder.mContentView.setOnLongClickListener(new View.OnLongClickListener() {
 
@@ -171,6 +168,7 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
 
     private boolean deleteTask(final ArrayList<DailyTask> dailyTasks, final int position) {
         mDailyTasks.remove(mDailyTasks.get(position));
+        TaskManager.setDateChanged(true);
         notifyDataSetChanged();
         return true;
     }

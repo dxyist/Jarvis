@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ecnu.leon.jarvis.R;
+import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskRecyclerViewAdapter;
 import com.ecnu.leon.jarvis.model.task.dailytask.TaskManager;
-import com.ecnu.leon.jarvis.tasks.ui.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
@@ -26,6 +26,8 @@ public class RoutineTaskFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+    RecyclerView recyclerView;
+
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -62,15 +64,22 @@ public class RoutineTaskFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new RoutineTaskRecyclerViewAdapter(TaskManager.getInstance(getContext()).getRoutineTasks(TaskManager.currentTaskCalendar), mListener,getContext()));
+            recyclerView.setAdapter(new RoutineTaskRecyclerViewAdapter(TaskManager.getInstance(getContext()).getRoutineTasks(TaskManager.currentTaskCalendar), mListener, getContext()));
         }
         return view;
+    }
+
+    public void refresh() {
+        if (recyclerView != null) {
+            recyclerView.setAdapter(new RoutineTaskRecyclerViewAdapter(TaskManager.getInstance(getContext()).getRoutineTasks(TaskManager.currentTaskCalendar), mListener, getContext()));
+
+        }
     }
 
 
@@ -103,6 +112,6 @@ public class RoutineTaskFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+//        void onListFragmentInteraction(DummyItem item);
     }
 }

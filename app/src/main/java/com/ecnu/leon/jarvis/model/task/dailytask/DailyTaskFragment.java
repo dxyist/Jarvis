@@ -84,6 +84,12 @@ public class DailyTaskFragment extends Fragment {
 
     }
 
+    public void refresh() {
+        if (recyclerView != null) {
+            recyclerView.setAdapter(new DailyTaskRecyclerViewAdapter(TaskManager.getInstance(getContext()).getDailyTasks(TaskManager.currentTaskCalendar), mListener, getContext()));
+        }
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();

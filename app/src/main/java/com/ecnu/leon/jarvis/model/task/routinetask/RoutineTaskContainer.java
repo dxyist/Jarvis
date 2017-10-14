@@ -19,21 +19,16 @@ import java.util.Date;
 
 public class RoutineTaskContainer implements Serializable {
     // String使用2017-08-17格式
-    private ArrayList<RoutineTask> routineTasksArray;
+    private ArrayList<RoutineTask> routineTasksArray = new ArrayList<RoutineTask>();
     private static final String FILE_NAME = "RoutineTask.dat";
 
     private Context context;
 
     public RoutineTaskContainer(Context context) {
-        this.routineTasksArray = routineTasksArray;
         this.context = context;
     }
 
     public void addRoutineTask(RoutineTask routineTask) {
-
-        if (routineTasksArray == null) {
-            routineTasksArray = new ArrayList<RoutineTask>();
-        }
 
         routineTasksArray.add(routineTask);
     }
@@ -42,10 +37,6 @@ public class RoutineTaskContainer implements Serializable {
 
         ArrayList<RoutineTask> tasks = new ArrayList<>();
 
-        if (routineTasksArray == null) {
-            routineTasksArray = new ArrayList<RoutineTask>();
-            // 保证对象的传递性，这样在加入数据的时候可以调用刷
-        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         // 把合法的任务填写进去
@@ -77,5 +68,27 @@ public class RoutineTaskContainer implements Serializable {
         this.routineTasksArray = (ArrayList<RoutineTask>) in.readObject();
         in.close();
         return false;
+    }
+
+    public int getOneDayResultValue(Date date) {
+        int value = 0;
+
+        for (int i = 0; i < routineTasksArray.size(); i++) {
+            value += routineTasksArray.get(i).getOneDayValue(date);
+        }
+
+        return value;
+
+    }
+
+    public int getTotalValue() {
+        int value = 0;
+
+        for (int i = 0; i < routineTasksArray.size(); i++) {
+            value += routineTasksArray.get(i).getTotalValue();
+
+        }
+
+        return value;
     }
 }

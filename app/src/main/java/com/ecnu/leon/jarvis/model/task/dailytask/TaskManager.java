@@ -17,7 +17,7 @@ import java.util.Date;
  */
 
 public class TaskManager {
-
+    private static boolean isDataChanged = false;
     private int initialValue = 10;
 
     // 存储当前全局时间
@@ -32,6 +32,8 @@ public class TaskManager {
     private RoutineTaskContainer routineTaskContainer;
 
     private Context context;
+
+    private int basicValue = 10;
 
     private TaskManager(Context context) {
         this.context = context;
@@ -55,12 +57,13 @@ public class TaskManager {
     public void addNewDailyTask(String taskContent, int taskValue) {
         // 取克隆日期
         DailyTask task = new DailyTask(getNewTaskID(), taskContent, (Date) TaskManager.currentTaskCalendar.clone(), taskValue);
-
+        Toast.makeText(context, dailyTaskContainer.getOneDayMaximumPossibleValue((Date) TaskManager.currentTaskCalendar.clone())+"/"+dailyTaskContainer.getMaximumValueForOneDay(), Toast.LENGTH_SHORT).show();
         dailyTaskContainer.addDailyTask(task);
     }
 
     public void addNewRoutineTask(String taskContent, int taskValue, Boolean[] weeks) {
         RoutineTask task = new RoutineTask(getNewTaskID(), taskContent, taskValue, (Date) TaskManager.currentTaskCalendar.clone(), weeks);
+
         routineTaskContainer.addRoutineTask(task);
     }
 
@@ -82,7 +85,7 @@ public class TaskManager {
         int value = 0;
 
         value += dailyTaskContainer.getOneDayResultValue(date);
-//        value += routineTaskContainer.get(date);
+        value += routineTaskContainer.getOneDayResultValue(date);
 
         return value;
     }
@@ -90,8 +93,9 @@ public class TaskManager {
     public int getTotalValue() {
         int value = 0;
 
-//        value += dailyTaskContainer.getTotalValue();
-//        value += routineTaskContainer.get(date);
+        value += basicValue;
+        value += dailyTaskContainer.getTotalValue();
+        value += routineTaskContainer.getTotalValue();
 
         return value;
     }
@@ -157,4 +161,11 @@ public class TaskManager {
         }
     }
 
+    public static boolean isDateChanged() {
+        return isDataChanged;
+    }
+
+    public static void setDateChanged(boolean b) {
+        isDataChanged = b;
+    }
 }

@@ -1,11 +1,17 @@
 package com.ecnu.leon.jarvis.model.task.routinetask;
 
+import android.widget.Toast;
+
 import com.ecnu.leon.jarvis.model.task.Task;
+import com.ecnu.leon.jarvis.model.task.dailytask.DailyTask;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Leon on 2017/9/25.
@@ -26,7 +32,8 @@ public class RoutineTask extends Task implements Serializable {
     private Boolean[] daysOfWeek = {};
 
     // 存储任务状态
-    private HashMap<String, Integer> taskStatuses;
+    private HashMap<String, Integer> taskStatuses = new HashMap<>();
+    ;
 
     /**
      * 必须传入一个名称和任务ID
@@ -39,7 +46,6 @@ public class RoutineTask extends Task implements Serializable {
         this.content = content;
         this.taskValue = value;
         this.daysOfWeek = daysOfWeek.clone();
-        this.taskStatuses = new HashMap<>();
 
     }
 
@@ -74,10 +80,9 @@ public class RoutineTask extends Task implements Serializable {
             key = format.format(currentDate);
         }
 
-        if (taskStatuses.containsKey(key) && taskStatuses.get(key) == 1)
-        {
+        if (taskStatuses.containsKey(key) && taskStatuses.get(key) == 1) {
             return true;
-        }else {
+        } else {
             return false;
         }
 
@@ -109,5 +114,34 @@ public class RoutineTask extends Task implements Serializable {
 
     public void setDaysOfWeek(Boolean[] daysOfWeek) {
         this.daysOfWeek = daysOfWeek;
+    }
+
+    public int getOneDayValue(Date date) {
+        int value = 0;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = format.format(date);
+
+        int taskStatus = 0;
+        if (taskStatuses.containsKey(dateString)) {
+            taskStatus = taskStatuses.get(dateString);
+        }
+
+        if (taskStatus == TASK_STATE_FINISHED) {
+            return getTaskValue();
+        }
+        return value;
+    }
+
+    public int getTotalValue() {
+        int totalValue = 0;
+        for (Map.Entry<String, Integer> entry : taskStatuses.entrySet()) {
+            int taskStatus = entry.getValue();
+
+            if (taskStatus == TASK_STATE_FINISHED) {
+                totalValue += getTaskValue();
+            }
+        }
+
+        return totalValue;
     }
 }

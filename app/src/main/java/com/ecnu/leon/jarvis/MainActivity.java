@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         if (taskFragment == null) {
             taskFragment = TaskFragment.newInstance();
             transaction.add(R.id.fragment_container, taskFragment);
+            ((TaskFragment)taskFragment).startMainThread();
         }
         //隐藏所有fragment
         hideFragment(transaction);

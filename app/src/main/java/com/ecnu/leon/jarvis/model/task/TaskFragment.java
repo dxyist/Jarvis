@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -22,10 +24,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ecnu.leon.jarvis.R;
+import com.ecnu.leon.jarvis.Utils.DateUtil;
+import com.ecnu.leon.jarvis.model.task.dailytask.DailyTask;
 import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskFragment;
 import com.ecnu.leon.jarvis.model.task.dailytask.TaskManager;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskFragment;
 
+import org.jsoup.helper.DataUtil;
+
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -38,8 +45,10 @@ public class TaskFragment extends Fragment {
 
     private TextView actionBarDateTextview;
     private TextView actionBarWeekTextview;
-    private TextView actionBarTaskValueTextview;
+    private TextView actionBarTotalTaskValueTextview;
+    private TextView actionBarTodayTaskValueTextview;
     private TextView actionBarLastDaysTextview;
+    private TextView actionBarTodayTextview;
 
     private ImageView leftArrowImageview;
     private ImageView rightArrowImageview;
@@ -101,7 +110,11 @@ public class TaskFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
+                //
                 currentPosition = position;
+                TaskManager.currentTaskCalendar = new Date();
+                refreshActionBar();
+                refreshSubFragment();
 
             }
 
@@ -116,6 +129,7 @@ public class TaskFragment extends Fragment {
 
         initActionBar(rootView);
 
+        TaskManager.setDateChanged(true);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_task);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -258,25 +272,103 @@ public class TaskFragment extends Fragment {
         return rootView;
     }
 
+
+    public void startMainThread() {
+        mainThread.start();
+    }
+
+
+    Thread mainThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            while (true) {
+                if (TaskManager.isDateChanged()) {
+                    TaskManager.setDateChanged(false);
+                    Message message = mainHandler.obtainMessage();
+                    mainHandler.sendMessage(message);
+//                    refreshActionBar();
+                }
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+    });
+
+    Handler mainHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (actionBarTotalTaskValueTextview != null) {
+
+                actionBarTotalTaskValueTextview.setText(TaskManager.getInstance(getContext()).getTotalValue() + "");
+            }
+
+            if (actionBarTodayTaskValueTextview != null) {
+
+                actionBarTodayTaskValueTextview.setText(TaskManager.getInstance(getContext()).getOneDayValue(TaskManager.currentTaskCalendar) + "");
+            }
+
+        }
+    };
+
+
     private void initActionBar(View rootView) {
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
 
         actionBarDateTextview = (TextView) rootView.findViewById(R.id.txt_actionbar_date);
+        actionBarWeekTextview = (TextView) rootView.findViewById(R.id.txt_actionbar_week);
+        actionBarTotalTaskValueTextview = (TextView) rootView.findViewById(R.id.text_total_positive_value);
+        actionBarTodayTaskValueTextview = (TextView) rootView.findViewById(R.id.text_today_positive_value);
+        actionBarTodayTextview = (TextView) rootView.findViewById(R.id.txt_actionbar_day_diff);
+
         actionBarDateTextview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskManager.currentTaskCalendar = new Date();   //这个时间就是日期往后推一天的结果
+                TaskManager.currentTaskCalendar = new Date();   //跳转今天
                 refreshActionBar();
-                refreshFragment();
-                viewPager.setCurrentItem(currentPosition);
+                refreshSubFragment();
             }
         });
-        actionBarWeekTextview = (TextView) rootView.findViewById(R.id.txt_actionbar_week);
-        actionBarTaskValueTextview = (TextView) rootView.findViewById(R.id.text_positive_value);
-        actionBarTaskValueTextview.setOnClickListener(new View.OnClickListener() {
+
+        actionBarWeekTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaskManager.currentTaskCalendar = new Date();   //跳转今天
+                refreshActionBar();
+                refreshSubFragment();
+
+            }
+        });
+
+
+        actionBarTodayTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaskManager.currentTaskCalendar = new Date();   //跳转今天
+                refreshActionBar();
+                refreshSubFragment();
+
+            }
+        });
+
+
+        actionBarTodayTaskValueTextview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refreshActionBar();
+                refreshSubFragment();
+
+            }
+        });
+        actionBarTodayTaskValueTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshActionBar();
+                refreshSubFragment();
+
             }
         });
         actionBarLastDaysTextview = (TextView) rootView.findViewById(R.id.text_last_days);
@@ -294,8 +386,8 @@ public class TaskFragment extends Fragment {
                 calendar.add(calendar.DATE, -1);//把日期往后增加一天.整数往后推,负数往前移动
                 TaskManager.currentTaskCalendar = calendar.getTime();   //这个时间就是日期往后推一天的结果
                 refreshActionBar();
-                refreshFragment();
-                viewPager.setCurrentItem(currentPosition);
+                refreshSubFragment();
+
 
             }
         });
@@ -312,11 +404,26 @@ public class TaskFragment extends Fragment {
                 calendar.add(calendar.DATE, 1);//把日期往后增加一天.整数往后推,负数往前移动
                 TaskManager.currentTaskCalendar = calendar.getTime();   //这个时间就是日期往后推一天的结果
                 refreshActionBar();
-                refreshFragment();
-                viewPager.setCurrentItem(currentPosition);
+                refreshSubFragment();
+
             }
         });
         refreshActionBar();
+    }
+
+    private void getCurrentPositive() {
+
+    }
+
+    private void refreshSubFragment()
+    {
+        Fragment fragment = ((SectionsPagerAdapter) viewPager.getAdapter()).getCurrentFragment();
+        if (fragment instanceof DailyTaskFragment) {
+            ((DailyTaskFragment) fragment).refresh();
+        }
+        if (fragment instanceof RoutineTaskFragment) {
+            ((RoutineTaskFragment) fragment).refresh();
+        }
     }
 
     private void refreshActionBar() {
@@ -333,15 +440,54 @@ public class TaskFragment extends Fragment {
             actionBarWeekTextview.setText(dateString);
         }
 
-        if (actionBarTaskValueTextview != null) {
+        if (actionBarTotalTaskValueTextview != null) {
 
-            actionBarTaskValueTextview.setText(TaskManager.getInstance(getContext()).getTotalValue() + "");
+            actionBarTotalTaskValueTextview.setText(TaskManager.getInstance(getContext()).getTotalValue() + "");
         }
 
+        if (actionBarTodayTaskValueTextview != null) {
 
-    }
+            actionBarTodayTaskValueTextview.setText(TaskManager.getInstance(getContext()).getOneDayValue(TaskManager.currentTaskCalendar) + "");
+        }
 
-    private void getCurrentPositive() {
+        if (actionBarTodayTextview != null) {
+
+            try {
+                int dayDiff = 0;
+                dayDiff = DateUtil.daysBetween(new Date(), TaskManager.currentTaskCalendar);
+
+                String diffString = "今天";
+
+                if (dayDiff == 0) {
+                    diffString = "今天";
+
+                } else if (dayDiff == 1) {
+                    diffString = "明天";
+
+                } else if (dayDiff == -1) {
+                    diffString = "昨天";
+
+                } else if (dayDiff == 2) {
+                    diffString = "后天";
+
+                } else if (dayDiff == -2) {
+                    diffString = "前天";
+
+                } else if (dayDiff < -2) {
+                    diffString = dayDiff + "天前";
+
+                } else if (dayDiff > 2) {
+                    diffString = dayDiff + "天后";
+
+                }
+
+                actionBarTodayTextview.setText("(" + diffString + ")");
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
 
     }
 
@@ -393,6 +539,9 @@ public class TaskFragment extends Fragment {
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private Fragment mCurrentFragment;
+
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -409,6 +558,17 @@ public class TaskFragment extends Fragment {
 
             }
             return PlaceholderFragment.newInstance(position + 1);
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            mCurrentFragment = (Fragment) object;
+            super.setPrimaryItem(container, position, object);
+        }
+
+
+        public Fragment getCurrentFragment() {
+            return mCurrentFragment;
         }
 
         @Override
