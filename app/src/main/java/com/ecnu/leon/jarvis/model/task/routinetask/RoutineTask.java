@@ -33,7 +33,7 @@ public class RoutineTask extends Task implements Serializable {
 
     // 存储任务状态
     private HashMap<String, Integer> taskStatuses = new HashMap<>();
-    ;
+
 
     /**
      * 必须传入一个名称和任务ID

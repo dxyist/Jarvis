@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import com.ecnu.leon.jarvis.Utils.PrefKeys;
 import com.ecnu.leon.jarvis.Utils.PrefUtils;
+import com.ecnu.leon.jarvis.model.task.consumable.Consumable;
+import com.ecnu.leon.jarvis.model.task.consumable.ConsumableContainer;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTask;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskContainer;
 
@@ -30,6 +32,7 @@ public class TaskManager {
 
     private DailyTaskContainer dailyTaskContainer;
     private RoutineTaskContainer routineTaskContainer;
+    private ConsumableContainer consumableContainer;
 
     private Context context;
 
@@ -57,7 +60,7 @@ public class TaskManager {
     public void addNewDailyTask(String taskContent, int taskValue) {
         // 取克隆日期
         DailyTask task = new DailyTask(getNewTaskID(), taskContent, (Date) TaskManager.currentTaskCalendar.clone(), taskValue);
-        Toast.makeText(context, dailyTaskContainer.getOneDayMaximumPossibleValue((Date) TaskManager.currentTaskCalendar.clone())+"/"+dailyTaskContainer.getMaximumValueForOneDay(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, dailyTaskContainer.getOneDayMaximumPossibleValue((Date) TaskManager.currentTaskCalendar.clone()) + "/" + dailyTaskContainer.getMaximumValueForOneDay(), Toast.LENGTH_SHORT).show();
         dailyTaskContainer.addDailyTask(task);
     }
 
@@ -73,6 +76,10 @@ public class TaskManager {
 
     public ArrayList<RoutineTask> getRoutineTasks(Date currentDate) {
         return this.routineTaskContainer.getRoutineTaskList(currentDate);
+    }
+
+    public ArrayList<Consumable> getConsumables(Date currentDate) {
+        return this.consumableContainer.getConsumableArrayList(currentDate);
     }
 
     public static int getNewTaskID() {
