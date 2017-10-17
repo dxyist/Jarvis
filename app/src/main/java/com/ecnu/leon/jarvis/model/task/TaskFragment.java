@@ -25,12 +25,9 @@ import android.widget.TextView;
 
 import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.Utils.DateUtil;
-import com.ecnu.leon.jarvis.model.task.dailytask.DailyTask;
+import com.ecnu.leon.jarvis.model.task.consumable.ConsumableFragment;
 import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskFragment;
-import com.ecnu.leon.jarvis.model.task.dailytask.TaskManager;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskFragment;
-
-import org.jsoup.helper.DataUtil;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -79,8 +76,7 @@ public class TaskFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TaskManager.getInstance(getContext()).loadContent();
-
+        TaskFragment.newInstance();
     }
 
     @Override
@@ -246,6 +242,63 @@ public class TaskFragment extends Fragment {
                                 TaskManager.getInstance(getContext()).addNewRoutineTask(content, value, weeks);
                                 refreshFragment();
                                 viewPager.setCurrentItem(currentPosition);
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                        ((Button) tempView.findViewById(R.id.btn_cancel)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        //取消或确定按钮监听事件处理
+                        dialog.show();
+                    }
+                    break;
+                    case 3: {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
+                        final View tempView = View
+                                .inflate(getActivity(), R.layout.dlg_consumable_add, null);
+                        builder.setView(tempView);
+                        builder.setCancelable(true);
+                        final AlertDialog dialog = builder.create();
+
+                        final EditText titleEditText = (EditText) tempView.findViewById(R.id.edt_consumable_add_content);
+                        // 自动弹出软键盘
+                        titleEditText.setFocusable(true);
+                        titleEditText.setFocusableInTouchMode(true);
+                        titleEditText.requestFocus();
+                        Timer timer = new Timer();
+                        timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            public void run() {
+                                InputMethodManager inputManager = (InputMethodManager) titleEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                inputManager.showSoftInput(titleEditText, 0);
+                            }
+                        }, 400);
+
+
+                        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            public void onShow(DialogInterface dialog) {
+                                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.showSoftInput((EditText) tempView.findViewById(R.id.edt_consumable_add_content), InputMethodManager.SHOW_IMPLICIT);
+                            }
+                        });
+
+
+                        ((Button) tempView.findViewById(R.id.btn_confirm)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String content = titleEditText.getText().toString().trim();
+
+                                int value = Integer.valueOf(((EditText) tempView.findViewById(R.id.edt_consumable_add_value)).getText().toString().trim());
+                                TaskManager.getInstance(getContext()).addNewConsumable(content, value);
+                                viewPager.getAdapter().notifyDataSetChanged();
                                 dialog.dismiss();
 
                             }
@@ -555,6 +608,8 @@ public class TaskFragment extends Fragment {
                     return DailyTaskFragment.newInstance(1);
                 case 1:
                     return RoutineTaskFragment.newInstance(1);
+                case 3:
+                    return ConsumableFragment.newInstance(1);
 
             }
             return PlaceholderFragment.newInstance(position + 1);

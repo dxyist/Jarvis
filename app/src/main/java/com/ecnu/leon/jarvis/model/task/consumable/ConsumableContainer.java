@@ -33,7 +33,6 @@ public class ConsumableContainer {
 
     private boolean addDefaultConsumables() {
         Consumable consumable = new Consumable(ENERGY_EXCHANGE_ID, "10点正能量换100块", 10);
-        consumable.setPrice(1);
         this.consumableArrayList.add(consumable);
         return true;
     }

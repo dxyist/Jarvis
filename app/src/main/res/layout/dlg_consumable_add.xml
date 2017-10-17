@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <RelativeLayout
+        android:layout_width="280dp"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_dlg_dailytask_add_background"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/text_consumable_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:text="添加消费"
+            android:textSize="18sp" />
+
+        <EditText
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:id="@+id/edt_consumable_add_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_consumable_add_title"
+            android:hint="任務名" />
+
+        <TextView
+            android:id="@+id/text_consumable_add_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_consumable_add_content"
+            android:text=" 正能量消耗:"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edt_consumable_add_value"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text_consumable_add_value"
+            android:layout_alignBottom="@+id/text_consumable_add_value"
+            android:layout_alignParentEnd="true"
+            android:inputType="number"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="106dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/shape_button_cancel_dailytask_add_background"
+            android:text="取消"
+            android:textColor="#4d4d4d" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="106dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/btn_cancel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/shape_button_confirm_dailytask_add_background"
+            android:text="确定"
+            android:textColor="#03a9f4" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

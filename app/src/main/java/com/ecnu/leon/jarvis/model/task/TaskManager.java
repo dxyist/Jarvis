@@ -1,4 +1,4 @@
-package com.ecnu.leon.jarvis.model.task.dailytask;
+package com.ecnu.leon.jarvis.model.task;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -7,6 +7,8 @@ import com.ecnu.leon.jarvis.Utils.PrefKeys;
 import com.ecnu.leon.jarvis.Utils.PrefUtils;
 import com.ecnu.leon.jarvis.model.task.consumable.Consumable;
 import com.ecnu.leon.jarvis.model.task.consumable.ConsumableContainer;
+import com.ecnu.leon.jarvis.model.task.dailytask.DailyTask;
+import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskContainer;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTask;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskContainer;
 
@@ -23,7 +25,7 @@ public class TaskManager {
     private int initialValue = 10;
 
     // 存储当前全局时间
-    public static Date currentTaskCalendar;
+    public static Date currentTaskCalendar = new Date();
     private Boolean isLoadSuccess;
 
     private static TaskManager mTaskManager;
@@ -36,16 +38,24 @@ public class TaskManager {
 
     private Context context;
 
-    private int basicValue = 10;
+    private int basicValue = 53;
 
     private TaskManager(Context context) {
         this.context = context;
 
-        currentTaskCalendar = new Date();
-
+        // 下面两个顺序不能弄反
         this.isLoadSuccess = true;
+
+
         dailyTaskContainer = new DailyTaskContainer(context);
+
         routineTaskContainer = new RoutineTaskContainer(context);
+
+
+        consumableContainer = new ConsumableContainer(context);
+
+        loadContent();
+
     }
 
     public static TaskManager getInstance(Context context) {
@@ -60,14 +70,21 @@ public class TaskManager {
     public void addNewDailyTask(String taskContent, int taskValue) {
         // 取克隆日期
         DailyTask task = new DailyTask(getNewTaskID(), taskContent, (Date) TaskManager.currentTaskCalendar.clone(), taskValue);
-        Toast.makeText(context, dailyTaskContainer.getOneDayMaximumPossibleValue((Date) TaskManager.currentTaskCalendar.clone()) + "/" + dailyTaskContainer.getMaximumValueForOneDay(), Toast.LENGTH_SHORT).show();
         dailyTaskContainer.addDailyTask(task);
+        Toast.makeText(context, dailyTaskContainer.getOneDayMaximumPossibleValue((Date) TaskManager.currentTaskCalendar.clone()) + "/" + dailyTaskContainer.getMaximumValueForOneDay(), Toast.LENGTH_SHORT).show();
+
     }
 
     public void addNewRoutineTask(String taskContent, int taskValue, Boolean[] weeks) {
         RoutineTask task = new RoutineTask(getNewTaskID(), taskContent, taskValue, (Date) TaskManager.currentTaskCalendar.clone(), weeks);
 
         routineTaskContainer.addRoutineTask(task);
+    }
+
+    public void addNewConsumable(String taskContent, int taskValue) {
+        Consumable task = new Consumable(getNewTaskID(), taskContent, taskValue);
+
+        consumableContainer.addConsumable(task);
     }
 
     public ArrayList<DailyTask> getDailyTasks(Date currentDate) {
@@ -93,6 +110,7 @@ public class TaskManager {
 
         value += dailyTaskContainer.getOneDayResultValue(date);
         value += routineTaskContainer.getOneDayResultValue(date);
+        value -= consumableContainer.getOneDayConsumedValue(date);
 
         return value;
     }
@@ -103,6 +121,7 @@ public class TaskManager {
         value += basicValue;
         value += dailyTaskContainer.getTotalValue();
         value += routineTaskContainer.getTotalValue();
+        value -= consumableContainer.getTotalConsumedValue();
 
         return value;
     }
@@ -129,6 +148,16 @@ public class TaskManager {
                 }
             }
 
+            // routine save
+            if (consumableContainer != null) {
+                try {
+                    consumableContainer.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "数据存储失败！！！！！", Toast.LENGTH_SHORT).show();
+                }
+            }
+
         } else {
             Toast.makeText(context, "当前数据不可写", Toast.LENGTH_SHORT).show();
 
@@ -137,35 +166,21 @@ public class TaskManager {
     }
 
     public void loadContent() {
-        if (dailyTaskContainer != null) {
-            try {
-                dailyTaskContainer.load();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-                if (!(Boolean) PrefUtils.getKey(PrefKeys.DAILY_TASK_FIRST_TIME_LOAD, true)) {
-                    isLoadSuccess = false;
-                    Toast.makeText(context, "数据读取失败！！！！！", Toast.LENGTH_SHORT).show();
-                } else {
-                    PrefUtils.setKey(PrefKeys.DAILY_TASK_FIRST_TIME_LOAD, false);
-                }
-
+        try {
+            dailyTaskContainer.load();
+            routineTaskContainer.load();
+            consumableContainer.load();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            if (!(Boolean) PrefUtils.getKey(PrefKeys.DAILY_TASK_FIRST_TIME_LOAD, true)) {
+                isLoadSuccess = false;
+                Toast.makeText(context, "数据读取失败！！！！！", Toast.LENGTH_SHORT).show();
+            } else {
+                PrefUtils.setKey(PrefKeys.DAILY_TASK_FIRST_TIME_LOAD, false);
             }
+
         }
 
-        if (routineTaskContainer != null) {
-            try {
-                routineTaskContainer.load();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-                if (!(Boolean) PrefUtils.getKey(PrefKeys.ROUTINE_TASK_FIRST_TIME_LOAD, true)) {
-                    isLoadSuccess = false;
-                    Toast.makeText(context, "数据读取失败！！！！！", Toast.LENGTH_SHORT).show();
-                } else {
-                    PrefUtils.setKey(PrefKeys.ROUTINE_TASK_FIRST_TIME_LOAD, false);
-                }
-
-            }
-        }
     }
 
     public static boolean isDateChanged() {

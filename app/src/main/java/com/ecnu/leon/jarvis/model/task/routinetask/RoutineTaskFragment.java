@@ -11,8 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ecnu.leon.jarvis.R;
-import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskRecyclerViewAdapter;
-import com.ecnu.leon.jarvis.model.task.dailytask.TaskManager;
+import com.ecnu.leon.jarvis.model.task.TaskManager;
 
 /**
  * A fragment representing a list of Items.

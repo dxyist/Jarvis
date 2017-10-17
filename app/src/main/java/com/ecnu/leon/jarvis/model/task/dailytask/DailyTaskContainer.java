@@ -3,6 +3,8 @@ package com.ecnu.leon.jarvis.model.task.dailytask;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.ecnu.leon.jarvis.model.task.TaskManager;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

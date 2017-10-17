@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.Utils.DialogUtil;
 import com.ecnu.leon.jarvis.model.task.Task;
-import com.ecnu.leon.jarvis.model.task.TaskFragment;
+import com.ecnu.leon.jarvis.model.task.TaskManager;
 
 import java.util.ArrayList;
 import java.util.Timer;

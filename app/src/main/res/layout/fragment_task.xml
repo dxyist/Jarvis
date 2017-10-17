@@ -15,20 +15,6 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <Button
-        android:id="@+id/just_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="save" />
-
-
-    <Button
-        android:id="@+id/just_load"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/just_save"
-        android:text="load" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

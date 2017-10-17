@@ -2,7 +2,6 @@ package com.ecnu.leon.jarvis.model.task.routinetask;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +11,9 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.ecnu.leon.jarvis.R;
-import com.ecnu.leon.jarvis.model.task.dailytask.TaskManager;
+import com.ecnu.leon.jarvis.model.task.TaskManager;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 
 public class RoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<RoutineTaskRecyclerViewAdapter.ViewHolder> {

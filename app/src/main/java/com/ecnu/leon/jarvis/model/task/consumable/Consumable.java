@@ -22,7 +22,7 @@ public class Consumable implements Serializable {
      */
     private static final long serialVersionUID = -5887967544430385236L;
 
-    private String name;
+    private String content;
     private int price = 1;
     private Date createDate;
     // --TODO 增加项目
@@ -36,7 +36,8 @@ public class Consumable implements Serializable {
     public Consumable(long taskID, String name, int price) {
         this.ID = taskID;
         this.price = price;
-        this.setName(name);
+        this.content = name;
+        createDate = new Date();
     }
 
 
@@ -45,15 +46,15 @@ public class Consumable implements Serializable {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = format.format(date);
-
+        int times = 0;
         if (taskStatuses.containsKey(dateString)) {
-            int times = taskStatuses.get(dateString);
-            if (times > 0) {
-                taskStatuses.put(dateString, times - 1);
-                return true;
-            }
+            times = taskStatuses.get(dateString);
         }
-        return false;
+
+        if (times > 0) {
+            taskStatuses.put(dateString, times - 1);
+        }
+        return true;
     }
 
     // 减少一次，只能减少当天
@@ -61,13 +62,15 @@ public class Consumable implements Serializable {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = format.format(date);
-
+        int times = 0;
         if (taskStatuses.containsKey(dateString)) {
-            int times = taskStatuses.get(dateString);
-            taskStatuses.put(dateString, times + 1);
-            return true;
+            times = taskStatuses.get(dateString);
         }
-        return false;
+
+            taskStatuses.put(dateString, times + 1);
+
+        return true;
+
     }
 
 
@@ -118,14 +121,6 @@ public class Consumable implements Serializable {
     }
 
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getPrice() {
         return price;
     }
@@ -144,6 +139,14 @@ public class Consumable implements Serializable {
 
     public Date getCreateDate() {
         return createDate;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
 
