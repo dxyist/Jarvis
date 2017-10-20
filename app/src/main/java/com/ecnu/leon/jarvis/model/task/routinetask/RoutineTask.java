@@ -109,7 +109,7 @@ public class RoutineTask extends Task implements Serializable {
     }
 
     public Boolean[] getDaysOfWeek() {
-        return daysOfWeek;
+        return daysOfWeek.clone();
     }
 
     public void setDaysOfWeek(Boolean[] daysOfWeek) {

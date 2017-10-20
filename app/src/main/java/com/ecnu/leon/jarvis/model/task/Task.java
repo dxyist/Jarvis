@@ -17,8 +17,11 @@ public abstract class Task implements Serializable {
      */
     public static final int DAILY_TASK_TYPE = 1;
     public static final int ROUTINE_TASK_TYPE = 2;
-    public static final int REWARD_TASK_TYPE = 3;
+    public static final int TARGET_TASK_TYPE = 3;
     public static final int STEPPING_DAILY_TASK_TYPE = 4;
+
+    public static final int ROUTINE_STEP_TASK_TYPE = 11;
+
     public static final int GOAL_TYPE = 10;
 
 
