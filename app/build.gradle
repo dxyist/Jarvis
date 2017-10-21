@@ -14,7 +14,7 @@ android {
     }
 
 
-    signingConfigs{
+    signingConfigs {
         debug {
             storeFile file('../leon_sign.jks')//签名文件路径
             storePassword "jsjz@111"
@@ -40,7 +40,7 @@ android {
     }
 }
 
-dependencies{
+dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -55,4 +55,6 @@ dependencies{
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
+
+
 

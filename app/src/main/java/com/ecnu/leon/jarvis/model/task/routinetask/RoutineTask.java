@@ -29,6 +29,7 @@ public class RoutineTask extends Task implements Serializable {
     private String content;
     private int taskValue;
 
+    private boolean moreTimes = false;
     private Boolean[] daysOfWeek = {};
 
     // 存储任务状态
@@ -143,5 +144,13 @@ public class RoutineTask extends Task implements Serializable {
         }
 
         return totalValue;
+    }
+
+    public boolean isMoreTimes() {
+        return moreTimes;
+    }
+
+    public void setMoreTimes(boolean moreTimes) {
+        this.moreTimes = moreTimes;
     }
 }

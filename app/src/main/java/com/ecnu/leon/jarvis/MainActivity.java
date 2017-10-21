@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.cootek.feedsnews.sdk.FeedsManager;
+import com.ecnu.leon.jarvis.model.account.AccountFragment;
 import com.ecnu.leon.jarvis.model.news.FeedsListFragment;
 import com.ecnu.leon.jarvis.model.news.MockNewsUtil;
 import com.ecnu.leon.jarvis.model.task.TaskFragment;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment taskFragment;
     private Fragment newsFragment;
+    private Fragment accountFragment;
     private Fragment targetFragment;
     private Fragment graphicFragment;
 
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
                     addTaskPage();
                     return true;
                 case R.id.navigation_target:
+                    hideFragment(transaction);
+                    addAccountPage();
                     return true;
                 case R.id.navigation_news:
                     hideFragment(transaction);
@@ -113,6 +117,24 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    private void addAccountPage() {
+        //开启事务，fragment的控制是由事务来实现的
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if (accountFragment == null) {
+            accountFragment = AccountFragment.newInstance();
+            transaction.add(R.id.fragment_container, accountFragment);
+        }
+        //隐藏所有fragment
+        hideFragment(transaction);
+        //显示需要显示的fragment
+        transaction.show(accountFragment);
+
+        transaction.commit();
+    }
+
+
     private void addTaskPage() {
         //开启事务，fragment的控制是由事务来实现的
 
@@ -121,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         if (taskFragment == null) {
             taskFragment = TaskFragment.newInstance();
             transaction.add(R.id.fragment_container, taskFragment);
-            ((TaskFragment)taskFragment).startMainThread();
+            ((TaskFragment) taskFragment).startMainThread();
         }
         //隐藏所有fragment
         hideFragment(transaction);
@@ -169,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (graphicFragment != null) {
             transaction.hide(graphicFragment);
+        }
+        if (accountFragment != null) {
+            transaction.hide(accountFragment);
         }
     }
 

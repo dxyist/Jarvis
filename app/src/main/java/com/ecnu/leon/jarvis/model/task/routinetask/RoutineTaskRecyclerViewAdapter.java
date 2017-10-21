@@ -258,6 +258,8 @@ public class RoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<Routine
         ((CheckBox) view.findViewById(R.id.checkbox_routineTask_week6)).setChecked(weeks[6]);
         ((CheckBox) view.findViewById(R.id.checkbox_routineTask_week7)).setChecked(weeks[7]);
 
+        ((CheckBox) view.findViewById(R.id.checkbox_routineTask_is_step)).setChecked(routineTasks.get(position).isMoreTimes());
+
 
 //        final EditText rateEditText = (EditText) view.findViewById(R.id.edt_dailytask_add_);
 //        rateEditText.setText(taskContainer.get(position).getNegativeEnergyRate() + "");
@@ -297,7 +299,7 @@ public class RoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<Routine
                     weeks[7] = ((CheckBox) finalView.findViewById(R.id.checkbox_routineTask_week7)).isChecked();
 
                     routineTasks.get(position).setDaysOfWeek(weeks.clone());
-
+                    routineTasks.get(position).setMoreTimes(((CheckBox) finalView.findViewById(R.id.checkbox_routineTask_is_step)).isChecked());
                     notifyDataSetChanged();
                 }
 
