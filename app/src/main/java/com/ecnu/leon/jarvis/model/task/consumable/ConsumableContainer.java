@@ -68,7 +68,7 @@ public class ConsumableContainer {
     }
 
     public boolean save() throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(context.openFileOutput(FILENAME, Context.MODE_WORLD_READABLE));
+        ObjectOutputStream out = new ObjectOutputStream(context.openFileOutput(FILENAME, Context.MODE_PRIVATE));
         out.writeObject(this.consumableArrayList);
         out.flush();
         out.close();
