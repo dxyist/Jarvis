@@ -22,7 +22,7 @@ import java.util.Date;
 
 public class TaskManager {
     private static boolean isDataChanged = false;
-    private int initialValue = 10;
+    private int initialValue = 20;
 
     // 存储当前全局时间
     public static Date currentTaskCalendar = new Date();
@@ -38,7 +38,7 @@ public class TaskManager {
 
     private Context context;
 
-    private int basicValue = 53;
+    private int basicValue = 20;
 
     private TaskManager(Context context) {
         this.context = context;
