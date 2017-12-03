@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:hint="0.00"
-            android:numeric="decimal|signed"
+            android:inputType="numberDecimal"
             android:textColor="#FF0000"
             android:textColorHint="#FF0000"
             android:textSize="32sp" />
@@ -89,8 +89,9 @@
             android:id="@+id/edt_addAccount_remark"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:hint="备注..." />
+            android:hint="备注..."
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"

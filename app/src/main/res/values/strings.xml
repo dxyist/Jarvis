@@ -9,5 +9,6 @@
     <string name="title_activity_news_discovery">NewsDiscoveryActivity</string>
 
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_account_details">AccountDetailsActivity</string>
 
 </resources>

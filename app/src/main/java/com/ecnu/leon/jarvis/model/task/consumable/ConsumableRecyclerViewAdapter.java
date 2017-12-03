@@ -60,7 +60,6 @@ public class ConsumableRecyclerViewAdapter extends RecyclerView.Adapter<Consumab
         holder.totalValueTextview.setText(totalValue + "");
 
 
-
         // 抗锯齿
         holder.mContentView.getPaint().setAntiAlias(true);
         holder.valueTextview.getPaint().setAntiAlias(true);
@@ -69,7 +68,6 @@ public class ConsumableRecyclerViewAdapter extends RecyclerView.Adapter<Consumab
 
         holder.oneDayNumber.setText(consumables.get(position).getOneDayNumber(TaskManager.currentTaskCalendar) + "");
         holder.totalNumber.setText(consumables.get(position).getTotalNumber(TaskManager.currentTaskCalendar) + "");
-
 
 
         holder.consumableAdd.setOnClickListener(new ImageButton.OnClickListener() {
@@ -85,6 +83,16 @@ public class ConsumableRecyclerViewAdapter extends RecyclerView.Adapter<Consumab
             public void onClick(View v) {
                 consumables.get(position).reduceOnce(TaskManager.currentTaskCalendar);
                 notifyDataSetChanged();
+            }
+        });
+
+
+        holder.mContentView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(mContext, "is hide" + consumables.get(position).isHide(), Toast.LENGTH_SHORT).show();
+                notifyDataSetChanged();
+                return false;
             }
         });
     }

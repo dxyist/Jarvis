@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/unrealizedTask_item_Layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <TextView
+        android:id="@+id/txt_account_item_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="晚餐"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/txt_account_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_account_item_category"
+        android:layout_centerVertical="true"
+        android:text="15:00"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_account_item_remark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_account_item_category"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/txt_account_item_time"
+        android:text="测试"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/txt_account_item_value"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txt_account_item_category"
+        android:layout_alignParentRight="true"
+        android:text="32.23"
+        android:textColor="#FF0000"
+        android:textSize="16sp" />
+
+</RelativeLayout>

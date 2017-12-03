@@ -14,7 +14,7 @@ public class AccountItem implements Serializable {
     private long id;
     private float cost;
     private String remark = "";
-
+    private String category = "";
     private long ts;
 
 
@@ -47,5 +47,13 @@ public class AccountItem implements Serializable {
 
     public long getTs() {
         return ts;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

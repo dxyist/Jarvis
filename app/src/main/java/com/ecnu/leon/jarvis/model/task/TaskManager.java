@@ -105,6 +105,11 @@ public class TaskManager {
         return id;
     }
 
+    public int getIncomingExchangeAmount(){
+        return this.consumableContainer.getExchangeExpenses();
+    }
+
+
     public int getOneDayValue(Date date) {
         int value = 0;
 
@@ -172,11 +177,11 @@ public class TaskManager {
             consumableContainer.load();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            if (!(Boolean) PrefUtils.getKey(PrefKeys.DAILY_TASK_FIRST_TIME_LOAD, true)) {
+            if (!(Boolean) PrefUtils.getKey(PrefKeys.TASK_FIRST_TIME_LOAD, true)) {
                 isLoadSuccess = false;
                 Toast.makeText(context, "数据读取失败！！！！！", Toast.LENGTH_SHORT).show();
             } else {
-                PrefUtils.setKey(PrefKeys.DAILY_TASK_FIRST_TIME_LOAD, false);
+                PrefUtils.setKey(PrefKeys.TASK_FIRST_TIME_LOAD, false);
             }
 
         }

@@ -41,11 +41,11 @@
             android:id="@+id/edt_consumable_add_value"
             android:layout_width="24dp"
             android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:text="1"
             android:layout_alignBaseline="@+id/text_consumable_add_value"
             android:layout_alignBottom="@+id/text_consumable_add_value"
-            android:layout_alignParentEnd="true"
-            android:inputType="number"
-            android:text="1" />
+            android:layout_alignParentEnd="true" />
 
         <Button
             android:id="@+id/btn_cancel"

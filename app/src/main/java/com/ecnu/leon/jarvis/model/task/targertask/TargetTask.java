@@ -19,10 +19,14 @@ public class TargetTask extends Task implements Serializable {
     // 表示任务失败
     public static int TASK_STATE_FAILED = -1;
 
+    public static int TASK_PRIORITY_NORMAL = 1;
+    public static int TASK_PRIORITY_IMPORTANT = 2;
+    public static int TASK_PRIORITY_VERY_IMPORTANT = 3;
+
 
     private String content;
-    // 写入日期，作为展示用
-    private Date whiteDate;
+    // 任务截止日期(为空表示没有截止日期）
+    private Date deadlineDate = null;
 
     private String whiteDateFormatString;
 
@@ -36,8 +40,8 @@ public class TargetTask extends Task implements Serializable {
     private int taskValue;
 
 
-    // 任务倒扣率
-    private int taskPunchRate = 1;
+    // 任务奖励率（或者表示为任务重要程度，普通2倍，重要3倍，极其重要4倍）
+    private int taskBonusRate = 2;
 
     /**
      * 必须传入一个名称和任务ID

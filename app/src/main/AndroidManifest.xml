@@ -29,7 +29,12 @@
             android:name=".model.news.NewsDiscoveryActivity"
             android:label="@string/title_activity_news_discovery"
             android:theme="@style/AppTheme" />
-        <activity android:name=".model.account.AccountAddActivity"></activity>
+        <activity android:name=".model.account.AccountAddActivity" />
+        <activity
+            android:name=".model.account.AccountDetailsActivity"
+            android:label="@string/title_activity_account_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".model.project.ui.ForecastActivity"></activity>
     </application>
 
 </manifest>

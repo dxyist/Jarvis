@@ -29,6 +29,8 @@ public class Consumable implements Serializable {
     // --- 任务ID
     private long ID;
 
+    private boolean isHide = false;
+
     // 存储任务状态
     private HashMap<String, Integer> taskStatuses = new HashMap<>();
 
@@ -67,7 +69,7 @@ public class Consumable implements Serializable {
             times = taskStatuses.get(dateString);
         }
 
-            taskStatuses.put(dateString, times + 1);
+        taskStatuses.put(dateString, times + 1);
 
         return true;
 
@@ -147,6 +149,14 @@ public class Consumable implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isHide() {
+        return isHide;
+    }
+
+    public void setHide(boolean hide) {
+        isHide = hide;
     }
 }
 

@@ -60,6 +60,17 @@ public class ConsumableContainer {
         return false;
     }
 
+    public int getExchangeExpenses() {
+        for (int i = 0; i < consumableArrayList.size(); i++) {
+            if (consumableArrayList.get(i).getID() == ENERGY_EXCHANGE_ID) {
+                return consumableArrayList.get(i).getTotalCost() * 10;
+            }
+        }
+
+        return 0;
+    }
+
+
     public boolean cleanConsumable(GregorianCalendar calendar) {
 
         consumableArrayList.clear();
@@ -91,11 +102,11 @@ public class ConsumableContainer {
         calendar.setTime(date);
         // 把合法的任务填写进去
         for (int i = 0; i < consumableArrayList.size(); i++) {
-            if (consumableArrayList.get(i).getCreateDate().before(date)) {
+            if (consumableArrayList.get(i).getCreateDate().before(date) && !consumableArrayList.get(i).isHide()) {
                 tasks.add(consumableArrayList.get(i));
             }
         }
-        return consumableArrayList;
+        return tasks;
     }
 
     public int getDefaultValue() {
