@@ -20,6 +20,8 @@ import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTask;
 public class ConsumableContainer {
     private static final String FILENAME = "Comsumable.dat";
     public static final long ENERGY_EXCHANGE_ID = 10000000;
+    public static final long ENERGY_EXCHANGE_ID2 = 10000001;
+
     private Context context;
     private int defaultValue = 1;
 
@@ -33,6 +35,8 @@ public class ConsumableContainer {
 
     private boolean addDefaultConsumables() {
         Consumable consumable = new Consumable(ENERGY_EXCHANGE_ID, "10点正能量换100块", 10);
+        this.consumableArrayList.add(consumable);
+        Consumable consumable2 = new Consumable(ENERGY_EXCHANGE_ID2, "1点正能量换10块", 1);
         this.consumableArrayList.add(consumable);
         return true;
     }
@@ -50,6 +54,11 @@ public class ConsumableContainer {
             return false;
         }
 
+        if (ID == ENERGY_EXCHANGE_ID2) {
+            Toast.makeText(context, "改条目不可删除", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         for (int i = 0; i < consumableArrayList.size(); i++) {
             if (consumableArrayList.get(i).getID() == ID) {
                 consumableArrayList.remove(i);
@@ -61,13 +70,17 @@ public class ConsumableContainer {
     }
 
     public int getExchangeExpenses() {
+        int totalExchange = 0;
         for (int i = 0; i < consumableArrayList.size(); i++) {
             if (consumableArrayList.get(i).getID() == ENERGY_EXCHANGE_ID) {
-                return consumableArrayList.get(i).getTotalCost() * 10;
+                totalExchange += consumableArrayList.get(i).getTotalCost() * 10;
+            }
+            if (consumableArrayList.get(i).getID() == ENERGY_EXCHANGE_ID2) {
+                totalExchange += consumableArrayList.get(i).getTotalCost() * 10;
             }
         }
 
-        return 0;
+        return totalExchange;
     }
 
 

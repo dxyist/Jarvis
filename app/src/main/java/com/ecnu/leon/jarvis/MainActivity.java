@@ -14,6 +14,7 @@ import com.cootek.feedsnews.sdk.FeedsManager;
 import com.ecnu.leon.jarvis.model.account.AccountFragment;
 import com.ecnu.leon.jarvis.model.news.FeedsListFragment;
 import com.ecnu.leon.jarvis.model.news.MockNewsUtil;
+import com.ecnu.leon.jarvis.model.project.ui.ProjectFragment;
 import com.ecnu.leon.jarvis.model.task.TaskFragment;
 
 import java.util.GregorianCalendar;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment taskFragment;
     private Fragment newsFragment;
     private Fragment accountFragment;
+    private Fragment projectFragment;
     private Fragment targetFragment;
     private Fragment graphicFragment;
 
@@ -55,14 +57,16 @@ public class MainActivity extends AppCompatActivity {
                     hideFragment(transaction);
                     addTaskPage();
                     return true;
-                case R.id.navigation_target:
+                case R.id.navigation_project:
+                    hideFragment(transaction);
+                    addProjectPage();
+                    return true;
+
+                case R.id.navigation_account:
                     hideFragment(transaction);
                     addAccountPage();
                     return true;
-                case R.id.navigation_news:
-                    hideFragment(transaction);
-                    addNewsPage();
-                    return true;
+
             }
             return false;
         }
@@ -113,6 +117,23 @@ public class MainActivity extends AppCompatActivity {
         hideFragment(transaction);
         //显示需要显示的fragment
         transaction.show(newsFragment);
+
+        transaction.commit();
+    }
+
+    private void addProjectPage() {
+        //开启事务，fragment的控制是由事务来实现的
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if (projectFragment == null) {
+            projectFragment = ProjectFragment.newInstance();
+            transaction.add(R.id.fragment_container, projectFragment);
+        }
+        //隐藏所有fragment
+        hideFragment(transaction);
+        //显示需要显示的fragment
+        transaction.show(projectFragment);
 
         transaction.commit();
     }
@@ -194,6 +215,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (accountFragment != null) {
             transaction.hide(accountFragment);
+        }
+        if (projectFragment != null) {
+            transaction.hide(projectFragment);
         }
     }
 

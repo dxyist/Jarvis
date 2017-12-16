@@ -7,12 +7,12 @@
         android:title="任务页" />
 
     <item
-        android:id="@+id/navigation_news"
+        android:id="@+id/navigation_project"
         android:icon="@drawable/ic_news_black_24dp"
-        android:title="新闻页" />
+        android:title="目标页" />
 
     <item
-        android:id="@+id/navigation_target"
+        android:id="@+id/navigation_account"
         android:icon="@drawable/ic_target_black_24dp"
         android:title="账目页" />
 
