@@ -24,7 +24,7 @@ import java.util.GregorianCalendar;
 public class AccountManager {
 
     // 每日生活费
-    private int livingExpenses = 30;
+    private int livingExpenses = 20;
 
     private Date initDate;
 
@@ -32,11 +32,14 @@ public class AccountManager {
 
     private AccountItemContainer accountItemContainer;
 
+    private CategoryContainer categoryContainer;
+
+
     private Context context;
 
     private Boolean isLoadSuccess;
 
-    public static Date latelyBaginDate = new Date(2017, 9, 29);
+    public static Date latelyBaginDate = new Date(2017, 11, 28);
 
 
     private AccountManager(Context context) {
@@ -45,6 +48,7 @@ public class AccountManager {
         // 下面两个顺序不能弄反
         this.isLoadSuccess = true;
         accountItemContainer = new AccountItemContainer(context);
+        categoryContainer = new CategoryContainer(context);
         loadContent();
     }
 
@@ -99,6 +103,15 @@ public class AccountManager {
     }
 
     public void loadContent() {
+        // category load
+        try {
+            categoryContainer.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         try {
             accountItemContainer.load();
         } catch (IOException | ClassNotFoundException e) {
@@ -115,6 +128,12 @@ public class AccountManager {
     }
 
     public void saveContent() {
+        try {
+            categoryContainer.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if (isLoadSuccess) {
             // account save
             if (accountItemContainer != null) {
@@ -125,7 +144,6 @@ public class AccountManager {
                     Toast.makeText(context, "账目数据存储失败！！！！！", Toast.LENGTH_SHORT).show();
                 }
             }
-
         } else {
             Toast.makeText(context, "当前数据不可写", Toast.LENGTH_SHORT).show();
 
@@ -137,6 +155,10 @@ public class AccountManager {
         int id = (int) PrefUtils.getKey(PrefKeys.ACCOUNT_ID, 0);
         PrefUtils.setKey(PrefKeys.ACCOUNT_ID, id + 1);
         return id;
+    }
+
+    public CategoryContainer getCategoryContainer() {
+        return categoryContainer;
     }
 
 }

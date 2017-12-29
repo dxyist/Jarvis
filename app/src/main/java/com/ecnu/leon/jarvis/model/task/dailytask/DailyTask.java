@@ -117,16 +117,10 @@ public class DailyTask extends Task implements Serializable {
     }
 
     public int getResultValue() {
-        if (taskState == TASK_STATE_FAILED)
-        {
-            return -(this.taskValue * this.taskPunchRate);
+        if (taskState == TASK_STATE_FINISHED) {
+            return taskValue;
         }
-        if (taskState == TASK_STATE_FINISHED)
-        {
-            return this.taskValue;
-        }
-
-        return 0;
+        return -taskValue;
 
     }
 }

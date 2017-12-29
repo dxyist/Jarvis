@@ -17,7 +17,6 @@ public class AccountItem implements Serializable {
     private String category = "";
     private long ts;
 
-
     public AccountItem(long id, float cost) {
         this.id = id;
         this.cost = cost;

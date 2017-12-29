@@ -10,15 +10,19 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecnu.leon.jarvis.R;
 
+import java.util.GregorianCalendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class AccountAddActivity extends AppCompatActivity {
+    int REQUEST_CODE = 1;
+
     TextView categoryTextView;
     Button saveButton;
     Button saveAndStayButton;
@@ -43,6 +47,8 @@ public class AccountAddActivity extends AppCompatActivity {
         costNumberEditText = (EditText) findViewById(R.id.edt_addAccount_number);
         remarkEditText = (EditText) findViewById(R.id.edt_addAccount_remark);
 
+        categoryTextView = (TextView) findViewById(R.id.txt_addAccount_category);
+
         // 自动弹出软键盘
         costNumberEditText.setFocusable(true);
         costNumberEditText.setFocusableInTouchMode(true);
@@ -55,6 +61,9 @@ public class AccountAddActivity extends AppCompatActivity {
             }
 
         }, 400);
+
+        this.autoHint();
+
     }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -63,7 +72,20 @@ public class AccountAddActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.Rlayout_addAccount_category: {
-                    Toast.makeText(AccountAddActivity.this, "功能施工中~", Toast.LENGTH_SHORT).show();
+                    // intent很重要，是两个Activity之间的纽带
+                    Intent intent = new Intent(AccountAddActivity.this, CategoryActivity.class);
+
+                    // 需要传出去的数据字串
+                    String hello = categoryTextView.getText().toString().trim();
+                    // 我们把要传出去的字串放到bundle中
+                    Bundle extras = new Bundle();
+                    // 第一个参数是key值，取的通过这个key就可以拿到这个bundle中的数据了
+                    extras.putString("category", hello);
+                    // 将bundle放进Intent中
+                    intent.putExtras(extras);
+                    // 跳转，这边代码有变化
+                    // startActivity(in);
+                    startActivityForResult(intent, REQUEST_CODE);
                     break;
                 }
 
@@ -82,6 +104,11 @@ public class AccountAddActivity extends AppCompatActivity {
                     if (!remarkEditText.getText().toString().trim().equalsIgnoreCase("")) {
                         accountItem.setRemark(remarkEditText.getText().toString().trim());
                     }
+
+                    if (!categoryTextView.getText().toString().trim().equalsIgnoreCase("")) {
+                        accountItem.setCategory(categoryTextView.getText().toString().trim());
+                    }
+
                     AccountManager.getInstance(getApplicationContext()).addNewAccountItem(accountItem);
                     Toast.makeText(getApplicationContext(), "已加入账目", Toast.LENGTH_SHORT).show();
                     // 关闭Activity
@@ -98,6 +125,11 @@ public class AccountAddActivity extends AppCompatActivity {
                     if (!remarkEditText.getText().toString().trim().equalsIgnoreCase("")) {
                         accountItem.setRemark(remarkEditText.getText().toString().trim());
                     }
+
+                    if (!categoryTextView.getText().toString().trim().equalsIgnoreCase("")) {
+                        accountItem.setCategory(categoryTextView.getText().toString().trim());
+                    }
+
                     AccountManager.getInstance(getApplicationContext()).addNewAccountItem(accountItem);
                     Toast.makeText(getApplicationContext(), "已加入账目", Toast.LENGTH_SHORT).show();
                     // 关闭Activity
@@ -110,6 +142,44 @@ public class AccountAddActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        // TODO Auto-generated method stub
+        if (requestCode == REQUEST_CODE)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                String show = data.getStringExtra("return");
+                // 让textView显示取出来的数据
+                if (show != null)
+                {
+                    categoryTextView.setText(show);
+                } else
+                {
+                }
+            }
+        }
+    }
+
+    private void autoHint()
+    {
+        GregorianCalendar nowCalendar = new GregorianCalendar();
+        int hour = nowCalendar.get(GregorianCalendar.HOUR_OF_DAY);
+        if (hour >= 5 && hour < 10)
+        {
+            categoryTextView.setText("早餐");
+        } else if (hour >= 10 && hour <= 14)
+        {
+            categoryTextView.setText("午餐");
+        } else if (hour >= 16 && hour <= 20)
+        {
+            categoryTextView.setText("晚餐");
+        } else if (hour >= 21 && hour <= 24)
+        {
+            categoryTextView.setText("夜宵");
+        }
+    }
 
     public void initView() {
         ActionBar actionBar = getActionBar();

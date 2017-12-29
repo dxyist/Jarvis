@@ -35,6 +35,7 @@
             android:label="@string/title_activity_account_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".model.project.ui.ForecastActivity"></activity>
+        <activity android:name=".model.account.CategoryActivity" />
     </application>
 
 </manifest>

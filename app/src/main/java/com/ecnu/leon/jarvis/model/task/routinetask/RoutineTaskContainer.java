@@ -82,7 +82,12 @@ public class RoutineTaskContainer implements Serializable {
     }
 
     public int getTotalValue() {
+        // 日常任務的增加需要扣除一个月的数量额度
         int value = 0;
+        // getRoutineAddConsume
+
+
+
 
         for (int i = 0; i < routineTasksArray.size(); i++) {
             value += routineTasksArray.get(i).getTotalValue();

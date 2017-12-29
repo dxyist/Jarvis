@@ -281,9 +281,9 @@ public class AccountDetailsActivity extends AppCompatActivity {
         private void initViewHolder(ViewHolder holder, final int position) {
 
             String string = "";
-            string = position + 1 + "：" + accountItems.get(position).getCategory();
-            holder.categoryTextView.setText(string);
-            holder.categoryTextView.setOnClickListener(new View.OnClickListener() {
+            string = position + 1 + "：" + accountItems.get(position).getRemark();
+            holder.remarkTextView.setText(string);
+            holder.remarkTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -311,8 +311,8 @@ public class AccountDetailsActivity extends AppCompatActivity {
             float value = accountItems.get(position).getCost();
             holder.valueTextView.setText(value + "");
 
-            holder.remarkTextView.setText(accountItems.get(position).getRemark());
-            SimpleDateFormat format = new SimpleDateFormat("H-mm-ss");
+            holder.categoryTextView.setText(accountItems.get(position).getCategory());
+            SimpleDateFormat format = new SimpleDateFormat("H:mm");
             String dateString = format.format(new Date(accountItems.get(position).getTs()));
             holder.createTimeTextView.setText(dateString);
 

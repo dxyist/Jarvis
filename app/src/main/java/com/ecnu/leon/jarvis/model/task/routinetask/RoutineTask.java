@@ -29,6 +29,9 @@ public class RoutineTask extends Task implements Serializable {
     private String content;
     private int taskValue;
 
+    // 用于表示多少天可以兑换
+    private int costDays = 30;
+
     private boolean moreTimes = false;
     private Boolean[] daysOfWeek = {};
 
@@ -134,7 +137,7 @@ public class RoutineTask extends Task implements Serializable {
     }
 
     public int getTotalValue() {
-        int totalValue = 0;
+        int totalValue = -costDays * this.taskValue;
         for (Map.Entry<String, Integer> entry : taskStatuses.entrySet()) {
             int taskStatus = entry.getValue();
 

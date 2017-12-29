@@ -349,6 +349,12 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
 
             holder.dailytaskPunchValueTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             holder.dailytaskPunchTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+
+            holder.dailytaskBounsValueTextview.setTextColor(Color.argb(255, 99, 204, 33));
+            holder.dailytaskBounsTextview.setTextColor(Color.argb(255, 99, 204, 33));
+
+            holder.dailytaskBounsValueTextview.getPaint().setFlags(0);
+            holder.dailytaskBounsTextview.getPaint().setFlags(0);
         } else {
             // 设置任务难度颜色
             switch (mDailyTasks.get(position).getTaskValue()) {
@@ -371,6 +377,12 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
                     holder.mContentView.setTextColor(Color.argb(255, 0, 0, 0));
                     break;
             }
+
+            holder.dailytaskBounsValueTextview.setTextColor(Color.GRAY);
+            holder.dailytaskBounsTextview.setTextColor(Color.GRAY);
+
+            holder.dailytaskBounsValueTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.dailytaskBounsTextview.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
             holder.mContentView.getPaint().setFlags(0);
             holder.mContentView.getPaint().setAntiAlias(true);

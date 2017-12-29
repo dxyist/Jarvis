@@ -37,7 +37,7 @@ public class ConsumableContainer {
         Consumable consumable = new Consumable(ENERGY_EXCHANGE_ID, "10点正能量换100块", 10);
         this.consumableArrayList.add(consumable);
         Consumable consumable2 = new Consumable(ENERGY_EXCHANGE_ID2, "1点正能量换10块", 1);
-        this.consumableArrayList.add(consumable);
+        this.consumableArrayList.add(consumable2);
         return true;
     }
 

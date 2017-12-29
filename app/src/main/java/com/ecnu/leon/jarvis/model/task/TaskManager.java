@@ -38,7 +38,7 @@ public class TaskManager {
 
     private Context context;
 
-    private int basicValue = 20;
+    private int basicValue = 50;
 
     private TaskManager(Context context) {
         this.context = context;
