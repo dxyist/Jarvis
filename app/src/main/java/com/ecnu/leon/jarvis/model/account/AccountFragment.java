@@ -132,7 +132,7 @@ public class AccountFragment extends Fragment {
         incomeFloatTextView.setText(totalIncome + "");
 
         outcomeFloatTextView.setText("当月支出");
-        outcomeFloatTextView.setText(AccountManager.getInstance(getActivity()).getTotalCost() + "");
+        outcomeFloatTextView.setText(AccountManager.getInstance(getActivity()).getMonthlyCost(new Date()) + "");
         float difference = AccountManager.getInstance(getContext()).getTotalIncomeValue() - AccountManager.getInstance(getContext()).getTotalCost();
         // 取2位精度
         difference = ((float) (Math.round(difference * 100)) / 100);

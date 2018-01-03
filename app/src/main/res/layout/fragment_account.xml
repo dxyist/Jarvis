@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_account_income_number_inThisMonth"
             android:layout_centerHorizontal="true"
-            android:text="本月收入"
+            android:text="总收入"
             android:textSize="16sp" />
     </RelativeLayout>
 
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_account_difference_number_inThisMonth"
             android:layout_centerHorizontal="true"
-            android:text="本月差额"
+            android:text="总盈余"
             android:textSize="16sp" />
     </RelativeLayout>
 

@@ -100,6 +100,19 @@ public class AccountItemContainer {
     public float getItemCostOfOneMonth(Date currentDate) {
         float cost = 0;
 
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        String dateString = format.format(currentDate);
+
+        for (Map.Entry<String, ArrayList<AccountItem>> entry : accountItemHashMap.entrySet()) {
+            // 取月份
+            if (entry.getKey().substring(0, 7).equals(dateString)) {
+                ArrayList<AccountItem> itemList = entry.getValue();
+                for (int i = 0; i < itemList.size(); i++) {
+                    cost += itemList.get(i).getCost();
+                }
+            }
+
+        }
         return cost;
     }
 

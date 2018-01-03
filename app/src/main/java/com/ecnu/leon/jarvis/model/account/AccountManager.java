@@ -83,6 +83,10 @@ public class AccountManager {
         return this.accountItemContainer.getItemTotalCost();
     }
 
+    public float getMonthlyCost(Date currentDate) {
+        return this.accountItemContainer.getItemCostOfOneMonth(currentDate);
+    }
+
     public float getOneDayCost(Date date) {
         return this.accountItemContainer.getItemCostOfOneDay(date);
     }
