@@ -49,7 +49,7 @@ public class CategoryContainer {
     }
 
     public boolean save() throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(context.openFileOutput(FILENAME, Context.MODE_WORLD_READABLE));
+        ObjectOutputStream out = new ObjectOutputStream(context.openFileOutput(FILENAME, Context.MODE_PRIVATE));
         out.writeObject(this.categories);
         out.flush();
         out.close();

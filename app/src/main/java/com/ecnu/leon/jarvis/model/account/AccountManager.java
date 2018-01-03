@@ -1,6 +1,7 @@
 package com.ecnu.leon.jarvis.model.account;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import com.ecnu.leon.jarvis.Utils.PrefKeys;
@@ -12,6 +13,8 @@ import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskContainer;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskContainer;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,11 +42,20 @@ public class AccountManager {
 
     private Boolean isLoadSuccess;
 
-    public static Date latelyBaginDate = new Date(2017, 11, 28);
+
+    public static Date latelyBaginDate;
 
 
     private AccountManager(Context context) {
         this.context = context;
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            latelyBaginDate = df.parse("2017-12-28 00:00:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         // 下面两个顺序不能弄反
         this.isLoadSuccess = true;
@@ -86,12 +98,11 @@ public class AccountManager {
     public float getTotalIncomeValue() {
         int value = 0;
 
-        Calendar aCalendar = Calendar.getInstance();
-        aCalendar.setTime(latelyBaginDate);
-        int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
-        aCalendar.setTime(new Date());
-        int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
-        value += (day2 - day1) * livingExpenses;
+        int days = (int) Math.abs((System.currentTimeMillis() - latelyBaginDate.getTime())
+                / (24 * 60 * 60 * 1000));
+
+        value += days * livingExpenses;
+
 
         value += getPositiveIncoming();
 
