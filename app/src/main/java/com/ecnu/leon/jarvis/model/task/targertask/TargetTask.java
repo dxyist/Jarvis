@@ -25,32 +25,31 @@ public class TargetTask extends Task implements Serializable {
 
 
     private String content;
-    // 任务截止日期(为空表示没有截止日期）
-    private Date deadlineDate = null;
+    // 剩余完成毫秒数
+    private long deadlineTs = 0;
 
     private String whiteDateFormatString;
 
     private int priority;
 
     // 任务状态
-    private int taskState;
-
+    private int taskState = 1;
 
     // 任务价值
     private int taskValue;
 
 
-    // 任务奖励率（或者表示为任务重要程度，普通2倍，重要3倍，极其重要4倍）
-    private int taskBonusRate = 2;
-
     /**
      * 必须传入一个名称和任务ID
      *
      * @param taskID
-     * @param createCalendar
      */
-    public TargetTask(int taskID, Date createCalendar) {
-        super(taskID, createCalendar);
+    public TargetTask(int taskID,String content,int taskValue,int priority,long deadlineTs) {
+        super(taskID, new Date());
+        this.content = content;
+        this.taskValue = taskValue;
+        this.priority = priority;
+        this.deadlineTs = deadlineTs;
     }
 
     @Override

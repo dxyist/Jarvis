@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="280dp"
         android:layout_height="200dp"
-        android:background="@drawable/shape_dlg_dailytask_add_background"
+        android:background="@drawable/shape_button_cancel_dailytask_add_background"
         android:padding="10dp">
 
         <TextView

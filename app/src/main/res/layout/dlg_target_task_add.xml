@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <RelativeLayout
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:background="@drawable/shape_button_cancel_dailytask_add_background"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/text_targetTask_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:text="目标任務"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_targetTask_add_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_targetTask_add_title"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="任務名" />
+
+        <TextView
+            android:id="@+id/text_targetTask_add_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_targetTask_add_content"
+            android:text=" 正能量值:"
+            android:textSize="16sp" />
+
+
+        <EditText
+            android:id="@+id/edt_targetTask_add_value"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text_targetTask_add_value"
+            android:layout_alignBottom="@+id/text_targetTask_add_value"
+            android:layout_alignParentEnd="true"
+            android:inputType="number"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/text_targetTask_limit_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_targetTask_add_value"
+            android:layout_marginTop="4dp"
+            android:text=" 执行天数:"
+            android:textSize="16sp" />
+
+
+        <EditText
+            android:id="@+id/edt_targetTask_limit_days"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text_targetTask_limit_days"
+            android:layout_alignBottom="@+id/text_targetTask_limit_days"
+            android:layout_alignParentEnd="true"
+            android:inputType="number"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/text_targetTask_deadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_targetTask_limit_days"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="截止：2018-01-18 18:21 星期日"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup_targetTask_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_targetTask_deadline"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:contentDescription="优先级"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_targetTask_priority_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="普通" />
+
+            <RadioButton
+                android:id="@+id/radio_targetTask_priority_important"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="重要" />
+
+            <RadioButton
+                android:id="@+id/radio_targetTask_priority_very_important"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="核心" />
+        </RadioGroup>
+
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="106dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/shape_button_cancel_dailytask_add_background"
+            android:text="取消"
+            android:textColor="#4d4d4d" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="106dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/btn_cancel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/shape_button_confirm_dailytask_add_background"
+            android:text="确定"
+            android:textColor="#03a9f4" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

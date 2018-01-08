@@ -11,6 +11,8 @@ import com.ecnu.leon.jarvis.model.task.dailytask.DailyTask;
 import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskContainer;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTask;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskContainer;
+import com.ecnu.leon.jarvis.model.task.targertask.TargetTask;
+import com.ecnu.leon.jarvis.model.task.targertask.TargetTaskContainer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,10 +37,14 @@ public class TaskManager {
     private DailyTaskContainer dailyTaskContainer;
     private RoutineTaskContainer routineTaskContainer;
     private ConsumableContainer consumableContainer;
+    private TargetTaskContainer targetTaskContainer;
+
 
     private Context context;
 
     private int basicValue = 50;
+
+    private int targetTaskTopLimit = 3;
 
     private TaskManager(Context context) {
         this.context = context;
@@ -81,6 +87,11 @@ public class TaskManager {
         routineTaskContainer.addRoutineTask(task);
     }
 
+    public void addNewTargetTask(String taskContent, int taskValue, int priority, long deadlineTs) {
+        TargetTask task = new TargetTask(getNewTaskID(), taskContent, taskValue, priority, deadlineTs);
+        targetTaskContainer.addTargetTask(task);
+    }
+
     public void addNewConsumable(String taskContent, int taskValue) {
         Consumable task = new Consumable(getNewTaskID(), taskContent, taskValue);
 
@@ -105,7 +116,7 @@ public class TaskManager {
         return id;
     }
 
-    public int getIncomingExchangeAmount(){
+    public int getIncomingExchangeAmount() {
         return this.consumableContainer.getExchangeExpenses();
     }
 
@@ -186,6 +197,15 @@ public class TaskManager {
 
         }
 
+    }
+
+    public int getActiveTargetTaskQuantity() {
+
+        return 0;
+    }
+
+    public int getTargetTaskLimit() {
+        return targetTaskTopLimit;
     }
 
     public static boolean isDateChanged() {

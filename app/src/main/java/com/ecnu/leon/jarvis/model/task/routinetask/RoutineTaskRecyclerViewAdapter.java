@@ -19,7 +19,6 @@ import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.Utils.DialogUtil;
 import com.ecnu.leon.jarvis.model.task.Task;
 import com.ecnu.leon.jarvis.model.task.TaskManager;
-import com.ecnu.leon.jarvis.model.task.dailytask.DailyTask;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -229,7 +228,7 @@ public class RoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<Routine
         // 关联XML文件，用于布局dialog
         switch (routineTasks.get(position).getTaskType()) {
             case Task.ROUTINE_TASK_TYPE:
-                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_routine_add, null);
+                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_routine_task_add, null);
                 break;
 //            case Task.STEPPING_DAILY_TASK_TYPE:
 //                view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_add_dailytask_stepping, null);
@@ -237,7 +236,7 @@ public class RoutineTaskRecyclerViewAdapter extends RecyclerView.Adapter<Routine
 //                break;
 
             default:
-                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_routine_add, null);
+                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_routine_task_add, null);
                 break;
         }
 

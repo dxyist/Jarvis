@@ -3,6 +3,7 @@ package com.ecnu.leon.jarvis.model.task;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +24,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.Utils.DateUtil;
-import com.ecnu.leon.jarvis.model.account.AccountFragment;
-import com.ecnu.leon.jarvis.model.account.AccountItem;
 import com.ecnu.leon.jarvis.model.task.consumable.ConsumableFragment;
 import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskFragment;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskFragment;
+import com.ecnu.leon.jarvis.model.task.targertask.TargetTask;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -137,7 +142,7 @@ public class TaskFragment extends Fragment {
                     case 0: {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
                         final View tempView = View
-                                .inflate(getActivity(), R.layout.dlg_dailytask_add, null);
+                                .inflate(getActivity(), R.layout.dlg_daily_task_add, null);
                         builder.setView(tempView);
                         builder.setCancelable(true);
                         final AlertDialog dialog = builder.create();
@@ -195,7 +200,7 @@ public class TaskFragment extends Fragment {
                     case 1: {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
                         final View tempView = View
-                                .inflate(getActivity(), R.layout.dlg_routine_add, null);
+                                .inflate(getActivity(), R.layout.dlg_routine_task_add, null);
                         builder.setView(tempView);
                         builder.setCancelable(true);
                         final AlertDialog dialog = builder.create();
@@ -243,6 +248,146 @@ public class TaskFragment extends Fragment {
                                 TaskManager.getInstance(getContext()).addNewRoutineTask(content, value, weeks);
                                 refreshFragment();
                                 viewPager.setCurrentItem(currentPosition);
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                        ((Button) tempView.findViewById(R.id.btn_cancel)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        //取消或确定按钮监听事件处理
+                        dialog.show();
+                    }
+                    break;
+                    case 2: {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
+                        final View tempView = View
+                                .inflate(getActivity(), R.layout.dlg_target_task_add, null);
+                        builder.setView(tempView);
+                        builder.setCancelable(true);
+                        final AlertDialog dialog = builder.create();
+
+                        final EditText titleEditText = (EditText) tempView.findViewById(R.id.edt_targetTask_add_content);
+                        // 自动弹出软键盘
+                        titleEditText.setFocusable(true);
+                        titleEditText.setFocusableInTouchMode(true);
+                        titleEditText.requestFocus();
+                        Timer timer = new Timer();
+                        timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            public void run() {
+                                InputMethodManager inputManager = (InputMethodManager) titleEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                inputManager.showSoftInput(titleEditText, 0);
+                            }
+                        }, 400);
+
+                        final EditText limitDaysEditTest = (EditText) tempView.findViewById(R.id.edt_targetTask_limit_days);
+
+
+                        final int limitDays = Integer.valueOf(limitDaysEditTest.getText().toString().trim());
+
+                        final TextView textViewLimitDaysHint = (TextView) tempView.findViewById(R.id.text_targetTask_deadline);
+
+                        Date deadlineDate = new Date(System.currentTimeMillis() + limitDays * 24 * 60 * 60 * 1000);
+                        SimpleDateFormat format = new SimpleDateFormat("截止日期：yyyy-MM-dd (EE)");
+                        String dateString = format.format(deadlineDate);
+                        textViewLimitDaysHint.setText(dateString);
+                        limitDaysEditTest.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+                                long days = 0;
+                                try {
+                                    days = Integer.valueOf(s.toString().trim());
+                                    if (days > 0) {
+                                        long ts = System.currentTimeMillis() + days * 24 * 60 * 60 * 1000;
+                                        Date deadlineDate = new Date(ts);
+                                        SimpleDateFormat format = new SimpleDateFormat("截止日期：yyyy-MM-dd (EE)");
+                                        String dateString = format.format(deadlineDate);
+                                        textViewLimitDaysHint.setText(dateString);
+                                    } else {
+                                        textViewLimitDaysHint.setText("日期必须大于0");
+                                    }
+                                } catch (NumberFormatException e) {
+                                    textViewLimitDaysHint.setText("输入有误");
+                                }
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
+                        limitDaysEditTest.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                            @Override
+                            public void onFocusChange(View v, boolean hasFocus) {
+                                if (!hasFocus) {
+
+                                }
+                            }
+                        });
+
+                        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            public void onShow(DialogInterface dialog) {
+                                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.showSoftInput((EditText) tempView.findViewById(R.id.edt_routineTask_add_content), InputMethodManager.SHOW_IMPLICIT);
+                            }
+                        });
+
+
+                        ((Button) tempView.findViewById(R.id.btn_confirm)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String content = titleEditText.getText().toString().trim();
+
+                                int value = Integer.valueOf(((EditText) tempView.findViewById(R.id.edt_targetTask_add_value)).getText().toString().trim());
+                                int tempLimitDays = Integer.valueOf(limitDaysEditTest.getText().toString().trim());
+                                if (tempLimitDays <= 0) {
+                                    Toast.makeText(getContext(), "截止日期必须大于等于0天", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+
+
+                                int priority = 0;
+                                switch (((RadioGroup) tempView.findViewById(R.id.radioGroup_targetTask_priority)).getCheckedRadioButtonId()) {
+                                    case R.id.radio_targetTask_priority_normal: {
+                                        priority = TargetTask.TASK_PRIORITY_NORMAL;
+                                        break;
+                                    }
+                                    case R.id.radio_targetTask_priority_important: {
+                                        priority = TargetTask.TASK_PRIORITY_IMPORTANT;
+                                        break;
+                                    }
+                                    case R.id.radio_targetTask_priority_very_important: {
+                                        priority = TargetTask.TASK_PRIORITY_VERY_IMPORTANT;
+                                        break;
+                                    }
+
+                                }
+//                             TaskManager.getInstance(getContext()).addNewTargetTask(content, value, priority, limitDays * 24 * 60 * 60 * 1000);
+//                                refreshFragment();
+//                                viewPager.setCurrentItem(currentPosition);
+
+                                Toast.makeText(getContext(),
+                                        "content:" + content + '\n' +
+                                                "value:" + value + '\n' +
+                                                "priority:" + priority + '\n' +
+                                                "limitTs:" + limitDays * 24 * 60 * 60 * 1000 + '\n'
+                                        , Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
 
                             }
@@ -469,8 +614,7 @@ public class TaskFragment extends Fragment {
 
     }
 
-    private void refreshSubFragment()
-    {
+    private void refreshSubFragment() {
         Fragment fragment = ((SectionsPagerAdapter) viewPager.getAdapter()).getCurrentFragment();
         if (fragment instanceof DailyTaskFragment) {
             ((DailyTaskFragment) fragment).refresh();

@@ -248,7 +248,7 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
         // 关联XML文件，用于布局dialog
         switch (dailyTasks.get(position).getTaskType()) {
             case Task.DAILY_TASK_TYPE:
-                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_dailytask_add, null);
+                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_daily_task_add, null);
                 break;
 //            case Task.STEPPING_DAILY_TASK_TYPE:
 //                view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_add_dailytask_stepping, null);
@@ -256,7 +256,7 @@ public class DailyTaskRecyclerViewAdapter extends RecyclerView.Adapter<DailyTask
 //                break;
 
             default:
-                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_dailytask_add, null);
+                view = LayoutInflater.from(mContext).inflate(R.layout.dlg_daily_task_add, null);
                 break;
         }
 

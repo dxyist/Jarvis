@@ -49,7 +49,6 @@ public class RoutineTaskContainer implements Serializable {
             }
         }
 
-
         return tasks;
     }
 
