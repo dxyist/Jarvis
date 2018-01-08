@@ -57,8 +57,9 @@ public class TaskManager {
 
         routineTaskContainer = new RoutineTaskContainer(context);
 
-
         consumableContainer = new ConsumableContainer(context);
+
+        targetTaskContainer = new TargetTaskContainer(context);
 
         loadContent();
 
@@ -106,9 +107,14 @@ public class TaskManager {
         return this.routineTaskContainer.getRoutineTaskList(currentDate);
     }
 
+    public ArrayList<TargetTask> getTargetTasks() {
+        return this.targetTaskContainer.getTargetTaskList();
+    }
+
     public ArrayList<Consumable> getConsumables(Date currentDate) {
         return this.consumableContainer.getConsumableArrayList(currentDate);
     }
+
 
     public static int getNewTaskID() {
         int id = (int) PrefUtils.getKey(PrefKeys.TASK_ID, 0);
@@ -116,6 +122,7 @@ public class TaskManager {
         return id;
     }
 
+    // 获取兑换的消费额度数量
     public int getIncomingExchangeAmount() {
         return this.consumableContainer.getExchangeExpenses();
     }
@@ -144,6 +151,15 @@ public class TaskManager {
 
 
     public void saveContent() {
+        // routine save
+        if (targetTaskContainer != null) {
+            try {
+                targetTaskContainer.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(context, "数据存储失败！！！！！", Toast.LENGTH_SHORT).show();
+            }
+        }
         if (isLoadSuccess) {
             // daily save
             if (dailyTaskContainer != null) {
@@ -164,6 +180,7 @@ public class TaskManager {
                 }
             }
 
+
             // routine save
             if (consumableContainer != null) {
                 try {
@@ -183,9 +200,17 @@ public class TaskManager {
 
     public void loadContent() {
         try {
+            targetTaskContainer.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
             dailyTaskContainer.load();
             routineTaskContainer.load();
             consumableContainer.load();
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             if (!(Boolean) PrefUtils.getKey(PrefKeys.TASK_FIRST_TIME_LOAD, true)) {

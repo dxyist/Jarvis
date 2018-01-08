@@ -34,6 +34,7 @@ import com.ecnu.leon.jarvis.model.task.consumable.ConsumableFragment;
 import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskFragment;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskFragment;
 import com.ecnu.leon.jarvis.model.task.targertask.TargetTask;
+import com.ecnu.leon.jarvis.model.task.targertask.TargetTaskFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -330,15 +331,6 @@ public class TaskFragment extends Fragment {
 
                             }
                         });
-                        limitDaysEditTest.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                            @Override
-                            public void onFocusChange(View v, boolean hasFocus) {
-                                if (!hasFocus) {
-
-                                }
-                            }
-                        });
-
                         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -378,16 +370,13 @@ public class TaskFragment extends Fragment {
                                     }
 
                                 }
-//                             TaskManager.getInstance(getContext()).addNewTargetTask(content, value, priority, limitDays * 24 * 60 * 60 * 1000);
-//                                refreshFragment();
-//                                viewPager.setCurrentItem(currentPosition);
+                                TaskManager.getInstance(getContext()).addNewTargetTask(content, value, priority, limitDays * 24 * 60 * 60 * 1000);
 
-                                Toast.makeText(getContext(),
-                                        "content:" + content + '\n' +
-                                                "value:" + value + '\n' +
-                                                "priority:" + priority + '\n' +
-                                                "limitTs:" + limitDays * 24 * 60 * 60 * 1000 + '\n'
-                                        , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "任务列表长度：" + TaskManager.getInstance(getContext()).getTargetTasks().size(), Toast.LENGTH_SHORT).show();
+                                refreshFragment();
+                                viewPager.setCurrentItem(currentPosition);
+
+
                                 dialog.dismiss();
 
                             }
@@ -622,6 +611,10 @@ public class TaskFragment extends Fragment {
         if (fragment instanceof RoutineTaskFragment) {
             ((RoutineTaskFragment) fragment).refresh();
         }
+
+        if (fragment instanceof TargetTaskFragment) {
+            ((TargetTaskFragment) fragment).refresh();
+        }
     }
 
     private void refreshActionBar() {
@@ -753,6 +746,8 @@ public class TaskFragment extends Fragment {
                     return DailyTaskFragment.newInstance(1);
                 case 1:
                     return RoutineTaskFragment.newInstance(1);
+                case 2:
+                    return TargetTaskFragment.newInstance(1);
                 case 3:
                     return ConsumableFragment.newInstance(1);
 

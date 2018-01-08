@@ -44,7 +44,7 @@ public class TargetTask extends Task implements Serializable {
      *
      * @param taskID
      */
-    public TargetTask(int taskID,String content,int taskValue,int priority,long deadlineTs) {
+    public TargetTask(int taskID, String content, int taskValue, int priority, long deadlineTs) {
         super(taskID, new Date());
         this.content = content;
         this.taskValue = taskValue;
@@ -58,4 +58,55 @@ public class TargetTask extends Task implements Serializable {
         return true;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public long getDeadlineTs() {
+        return deadlineTs;
+    }
+
+    public void setDeadlineTs(long deadlineTs) {
+        this.deadlineTs = deadlineTs;
+    }
+
+    public int getTaskState() {
+        return taskState;
+    }
+
+    public void setTaskState(int taskState) {
+        this.taskState = taskState;
+    }
+
+    public int getTaskValue() {
+        return taskValue;
+    }
+
+    public void setTaskValue(int taskValue) {
+        this.taskValue = taskValue;
+    }
+
+    public boolean isFinished() {
+        return getTaskState() == TASK_STATE_FINISHED;
+    }
+
+    public void setFinished() {
+        this.setTaskState(TASK_STATE_FINISHED);
+    }
+
+    public void setUnfinished() {
+        this.setTaskState(TASK_STATE_UNFINISHED);
+    }
 }
