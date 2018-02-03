@@ -5,16 +5,19 @@
         android:id="@+id/navigation_task"
         android:icon="@drawable/ic_task_black_24dp"
         android:title="任务页" />
-
-    <item
-        android:id="@+id/navigation_project"
-        android:icon="@drawable/ic_news_black_24dp"
-        android:title="目标页" />
-
     <item
         android:id="@+id/navigation_account"
-        android:icon="@drawable/ic_target_black_24dp"
+        android:icon="@drawable/ic_account_black_24dp"
         android:title="账目页" />
+    <item
+        android:id="@+id/navigation_project"
+        android:icon="@drawable/ic_project_black_24dp"
+        android:title="目标页" />
+    <item
+        android:id="@+id/navigation_reading"
+        android:icon="@drawable/ic_reading_black_24dp"
+        android:title="读书页" />
+
 
     <!--<item-->
     <!--android:id="@+id/navigation_notifications"-->
