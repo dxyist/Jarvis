@@ -15,6 +15,7 @@ import com.ecnu.leon.jarvis.model.account.AccountFragment;
 import com.ecnu.leon.jarvis.model.news.FeedsListFragment;
 import com.ecnu.leon.jarvis.model.news.MockNewsUtil;
 import com.ecnu.leon.jarvis.model.project.ui.ProjectFragment;
+import com.ecnu.leon.jarvis.model.reading.ReadingFragment;
 import com.ecnu.leon.jarvis.model.task.TaskFragment;
 
 import java.util.GregorianCalendar;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment projectFragment;
     private Fragment targetFragment;
     private Fragment graphicFragment;
+    private Fragment readingFragment;
 
     // 各类 dialog
     static final int ACTION_ADD_WEEKLYTASK_DIALOG = 0;
@@ -57,15 +59,20 @@ public class MainActivity extends AppCompatActivity {
                     hideFragment(transaction);
                     addTaskPage();
                     return true;
+                case R.id.navigation_account:
+                    hideFragment(transaction);
+                    addAccountPage();
+                    return true;
                 case R.id.navigation_project:
                     hideFragment(transaction);
                     addProjectPage();
                     return true;
 
-                case R.id.navigation_account:
+                case R.id.navigation_reading:
                     hideFragment(transaction);
-                    addAccountPage();
+                    addReadingPage();
                     return true;
+
 
             }
             return false;
@@ -174,6 +181,22 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    private void addReadingPage() {
+        //开启事务，fragment的控制是由事务来实现的
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        if (readingFragment == null) {
+            readingFragment = ReadingFragment.newInstance();
+            transaction.add(R.id.fragment_container, readingFragment);
+        }
+        //隐藏所有fragment
+        hideFragment(transaction);
+        //显示需要显示的fragment
+        transaction.show(readingFragment);
+
+        transaction.commit();
+    }
 
     private void setupViewPager(ViewPager viewPager) {
         FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -218,6 +241,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (projectFragment != null) {
             transaction.hide(projectFragment);
+        }
+        if (readingFragment != null) {
+            transaction.hide(readingFragment);
         }
     }
 
