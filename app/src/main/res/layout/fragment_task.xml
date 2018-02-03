@@ -17,10 +17,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/tabs"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_above="@+id/tabs">
 
         <TextView
             android:id="@+id/text_last_days"
@@ -90,8 +90,8 @@
             android:id="@+id/text_total_positive_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="14dp"
             android:layout_marginTop="6dp"
             android:text="20$"
             android:textColor="@color/white"
@@ -101,8 +101,9 @@
             android:id="@+id/text_today_positive_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="27dp"
-            android:layout_toLeftOf="@+id/text_today_positive_index"
+            android:layout_marginTop="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="14dp"
             android:text="20$"
             android:textColor="@color/white"
             android:textSize="12sp" />
@@ -111,12 +112,19 @@
             android:id="@+id/text_today_positive_index"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="14dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="33dp"
+            android:layout_toRightOf="@+id/text_today_positive_value"
             android:text="点正能量"
             android:textColor="@color/white"
             android:textSize="10sp" />
+
+        <Button
+            android:text="弹出菜单"
+            android:id="@+id/btn_task_pop"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 

@@ -137,6 +137,7 @@ public class RoutineTask extends Task implements Serializable {
     }
 
     public int getTotalValue() {
+        // 日常任務的增加需要扣除一个月的数量额度
         int totalValue = -costDays * this.taskValue;
         for (Map.Entry<String, Integer> entry : taskStatuses.entrySet()) {
             int taskStatus = entry.getValue();

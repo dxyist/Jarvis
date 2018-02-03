@@ -40,7 +40,7 @@
 
         <EditText
             android:id="@+id/edt_targetTask_add_value"
-            android:layout_width="24dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/text_targetTask_add_value"
             android:layout_alignBottom="@+id/text_targetTask_add_value"
@@ -87,12 +87,16 @@
             android:layout_marginTop="8dp"
             android:contentDescription="优先级"
             android:orientation="horizontal">
-
+            <RadioButton
+                android:id="@+id/radio_targetTask_priority_trivia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="琐事" />
             <RadioButton
                 android:id="@+id/radio_targetTask_priority_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
                 android:text="普通" />
 
             <RadioButton

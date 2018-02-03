@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_target_task_show_finished"
+        android:icon="@drawable/ic_task_black_24dp"
+        android:title="展示已完成" />
+    <item
+        android:id="@+id/item_target_task_order_by_remain_ts"
+        android:icon="@drawable/ic_task_black_24dp"
+        android:title="按照剩余时间排序" />
+    <item
+        android:id="@+id/item_target_task_show_by_priority"
+        android:icon="@drawable/ic_task_black_24dp"
+        android:title="按照优先级排序" />
+
+
+    <!--<item-->
+    <!--android:id="@+id/navigation_notifications"-->
+    <!--android:icon="@drawable/ic_graphic_black_24dp"-->
+    <!--android:title="统计页" />-->
+
+</menu>

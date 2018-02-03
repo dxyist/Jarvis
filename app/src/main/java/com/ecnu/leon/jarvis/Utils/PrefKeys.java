@@ -11,4 +11,9 @@ public class PrefKeys {
 
     public static final String ACCOUNT_FIRST_TIME_LOAD = "account_first_time_load";
 
+    // 目标任务相关
+    public static final String TARGET_TASK_HIDE_FINISHED = "target_task_hide_finished";
+    public static final String TARGET_TASK_ORDER_BY_REMAIN_TS = "target_task_order_by_remain_ts";
+    public static final String TARGET_TASK_ORDER_BY_PRIORITY = "target_task_order_by_priority";
+
 }

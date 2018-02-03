@@ -3,7 +3,6 @@ package com.ecnu.leon.jarvis.model.task;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,10 +12,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -30,10 +33,13 @@ import android.widget.Toast;
 
 import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.Utils.DateUtil;
+import com.ecnu.leon.jarvis.Utils.PrefKeys;
+import com.ecnu.leon.jarvis.Utils.PrefUtils;
 import com.ecnu.leon.jarvis.model.task.consumable.ConsumableFragment;
 import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskFragment;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskFragment;
 import com.ecnu.leon.jarvis.model.task.targertask.TargetTask;
+import com.ecnu.leon.jarvis.model.task.targertask.TargetTaskContainer;
 import com.ecnu.leon.jarvis.model.task.targertask.TargetTaskFragment;
 
 import java.text.ParseException;
@@ -47,6 +53,10 @@ import java.util.TimerTask;
 
 public class TaskFragment extends Fragment {
 
+    public static final int DAILY_TASK_VIEWPAGER_POSITION = 0;
+    public static final int ROUTINE_TASK_VIEWPAGER_POSITION = 1;
+    public static final int TARGET_TASK_VIEWPAGER_POSITION = 2;
+    public static final int CONSUMABLE_VIEWPAGER_POSITION = 3;
 
     private TextView actionBarDateTextview;
     private TextView actionBarWeekTextview;
@@ -54,6 +64,7 @@ public class TaskFragment extends Fragment {
     private TextView actionBarTodayTaskValueTextview;
     private TextView actionBarLastDaysTextview;
     private TextView actionBarTodayTextview;
+    private Button popMenuButton;
 
     private ImageView leftArrowImageview;
     private ImageView rightArrowImageview;
@@ -140,7 +151,7 @@ public class TaskFragment extends Fragment {
             public void onClick(final View view) {
 
                 switch (viewPager.getCurrentItem()) {
-                    case 0: {
+                    case DAILY_TASK_VIEWPAGER_POSITION: {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
                         final View tempView = View
                                 .inflate(getActivity(), R.layout.dlg_daily_task_add, null);
@@ -198,7 +209,7 @@ public class TaskFragment extends Fragment {
                     }
                     break;
 
-                    case 1: {
+                    case ROUTINE_TASK_VIEWPAGER_POSITION: {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
                         final View tempView = View
                                 .inflate(getActivity(), R.layout.dlg_routine_task_add, null);
@@ -265,7 +276,9 @@ public class TaskFragment extends Fragment {
                         dialog.show();
                     }
                     break;
-                    case 2: {
+
+                    // 目标任务录入逻辑
+                    case TARGET_TASK_VIEWPAGER_POSITION: {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
                         final View tempView = View
                                 .inflate(getActivity(), R.layout.dlg_target_task_add, null);
@@ -306,8 +319,6 @@ public class TaskFragment extends Fragment {
 
                             @Override
                             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
                                 long days = 0;
                                 try {
                                     days = Integer.valueOf(s.toString().trim());
@@ -347,7 +358,7 @@ public class TaskFragment extends Fragment {
                                 String content = titleEditText.getText().toString().trim();
 
                                 int value = Integer.valueOf(((EditText) tempView.findViewById(R.id.edt_targetTask_add_value)).getText().toString().trim());
-                                int tempLimitDays = Integer.valueOf(limitDaysEditTest.getText().toString().trim());
+                                long tempLimitDays = Integer.valueOf(limitDaysEditTest.getText().toString().trim());
                                 if (tempLimitDays <= 0) {
                                     Toast.makeText(getContext(), "截止日期必须大于等于0天", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();
@@ -356,6 +367,10 @@ public class TaskFragment extends Fragment {
 
                                 int priority = 0;
                                 switch (((RadioGroup) tempView.findViewById(R.id.radioGroup_targetTask_priority)).getCheckedRadioButtonId()) {
+                                    case R.id.radio_targetTask_priority_trivia: {
+                                        priority = TargetTask.TASK_PRIORITY_TRIVIA;
+                                        break;
+                                    }
                                     case R.id.radio_targetTask_priority_normal: {
                                         priority = TargetTask.TASK_PRIORITY_NORMAL;
                                         break;
@@ -368,11 +383,43 @@ public class TaskFragment extends Fragment {
                                         priority = TargetTask.TASK_PRIORITY_VERY_IMPORTANT;
                                         break;
                                     }
-
                                 }
-                                TaskManager.getInstance(getContext()).addNewTargetTask(content, value, priority, limitDays * 24 * 60 * 60 * 1000);
 
-                                Toast.makeText(getContext(), "任务列表长度：" + TaskManager.getInstance(getContext()).getTargetTasks().size(), Toast.LENGTH_SHORT).show();
+                                // 任务优先级加入逻辑限制
+                                String priorityString = "";
+                                switch (priority) {
+                                    case TargetTask.TASK_PRIORITY_TRIVIA: {
+                                        priorityString = "琐事";
+                                        break;
+                                    }
+                                    case TargetTask.TASK_PRIORITY_NORMAL: {
+                                        priorityString = "普通任务";
+                                        break;
+                                    }
+                                    case TargetTask.TASK_PRIORITY_IMPORTANT: {
+                                        priorityString = "重要任务";
+                                        break;
+                                    }
+                                    case TargetTask.TASK_PRIORITY_VERY_IMPORTANT: {
+                                        priorityString = "核心任务";
+                                        break;
+                                    }
+                                }
+
+                                if (TaskManager.getInstance(getContext()).getCurrentTargetTaskQuantityByPriority(priority) >= TargetTaskContainer.getQuantityCeilingByPriority(priority)) {
+                                    Toast.makeText(getContext(), priorityString + "总量超过上限", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    return;
+                                }
+
+                                if (value > TargetTaskContainer.getValueCeilingByPriority(priority)) {
+                                    Toast.makeText(getContext(), priorityString + "可分配Value超过上限", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    return;
+                                }
+
+                                TaskManager.getInstance(getContext()).addNewTargetTask(content, value, priority, tempLimitDays * 24 * 60 * 60 * 1000);
+
                                 refreshFragment();
                                 viewPager.setCurrentItem(currentPosition);
 
@@ -393,7 +440,7 @@ public class TaskFragment extends Fragment {
                         dialog.show();
                     }
                     break;
-                    case 3: {
+                    case CONSUMABLE_VIEWPAGER_POSITION: {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.NoBackGroundDialog);
                         final View tempView = View
                                 .inflate(getActivity(), R.layout.dlg_consumable_add, null);
@@ -503,7 +550,7 @@ public class TaskFragment extends Fragment {
     };
 
 
-    private void initActionBar(View rootView) {
+    private void initActionBar(final View rootView) {
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
 
         actionBarDateTextview = (TextView) rootView.findViewById(R.id.txt_actionbar_date);
@@ -511,7 +558,55 @@ public class TaskFragment extends Fragment {
         actionBarTotalTaskValueTextview = (TextView) rootView.findViewById(R.id.text_total_positive_value);
         actionBarTodayTaskValueTextview = (TextView) rootView.findViewById(R.id.text_today_positive_value);
         actionBarTodayTextview = (TextView) rootView.findViewById(R.id.txt_actionbar_day_diff);
+        popMenuButton = (Button) rootView.findViewById(R.id.btn_task_pop);
 
+        popMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (currentPosition == 2) {
+                    PopupMenu popup = new PopupMenu(getActivity(), popMenuButton);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater()
+                            .inflate(R.menu.target_task_menu, popup.getMenu());
+                    // 赋值
+                    if ((Boolean) PrefUtils.getKey(PrefKeys.TARGET_TASK_HIDE_FINISHED, true)) {
+                        popup.getMenu().getItem(0).setTitle("展示已完成任务");
+
+                    } else {
+                        popup.getMenu().getItem(0).setTitle("隐藏已完成任务");
+                    }
+
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.item_target_task_show_finished: {
+                                    Boolean isHideFinished = (Boolean) PrefUtils.getKey(PrefKeys.TARGET_TASK_HIDE_FINISHED, true);
+                                    PrefUtils.setKey(PrefKeys.TARGET_TASK_HIDE_FINISHED, !isHideFinished);
+                                    refreshFragment();
+                                    viewPager.setCurrentItem(currentPosition);
+                                    break;
+                                }
+                                case R.id.item_target_task_order_by_remain_ts: {
+                                    Toast.makeText(getContext(), "施工中", Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+                                case R.id.item_target_task_show_by_priority: {
+                                    Toast.makeText(getContext(), "施工中", Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+                            }
+                            return true;
+                        }
+                    });
+
+                    popup.show(); //showing popup menu
+                } else {
+                    Toast.makeText(getContext(), "施工中", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         actionBarDateTextview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -742,13 +837,13 @@ public class TaskFragment extends Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
-                case 0:
+                case DAILY_TASK_VIEWPAGER_POSITION:
                     return DailyTaskFragment.newInstance(1);
-                case 1:
+                case ROUTINE_TASK_VIEWPAGER_POSITION:
                     return RoutineTaskFragment.newInstance(1);
-                case 2:
+                case TARGET_TASK_VIEWPAGER_POSITION:
                     return TargetTaskFragment.newInstance(1);
-                case 3:
+                case CONSUMABLE_VIEWPAGER_POSITION:
                     return ConsumableFragment.newInstance(1);
 
             }
@@ -775,17 +870,43 @@ public class TaskFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
+                case DAILY_TASK_VIEWPAGER_POSITION:
                     return "每日任务";
-                case 1:
+                case ROUTINE_TASK_VIEWPAGER_POSITION:
                     return "日常任务";
-                case 2:
+                case TARGET_TASK_VIEWPAGER_POSITION:
                     return "目标任务";
-                case 3:
+                case CONSUMABLE_VIEWPAGER_POSITION:
                     return "消费页面";
             }
             return null;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.target_task_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navigation_task: {
+                Toast.makeText(getContext(), "navigation_task", Toast.LENGTH_SHORT).show();
+            }
+            case R.id.navigation_project: {
+                Toast.makeText(getContext(), "navigation_project", Toast.LENGTH_SHORT).show();
+
+            }
+            case R.id.navigation_account: {
+                Toast.makeText(getContext(), "navigation_account", Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
 

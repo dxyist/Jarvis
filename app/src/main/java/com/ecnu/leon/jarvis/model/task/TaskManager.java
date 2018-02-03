@@ -42,9 +42,7 @@ public class TaskManager {
 
     private Context context;
 
-    private int basicValue = 50;
-
-    private int targetTaskTopLimit = 3;
+    private int basicValue = 100;
 
     private TaskManager(Context context) {
         this.context = context;
@@ -99,6 +97,10 @@ public class TaskManager {
         consumableContainer.addConsumable(task);
     }
 
+    public int getCurrentTargetTaskQuantityByPriority(int priority) {
+        return this.targetTaskContainer.getCurrentTaskQuantityByPriority(priority);
+    }
+
     public ArrayList<DailyTask> getDailyTasks(Date currentDate) {
         return this.dailyTaskContainer.getDailyTaskList(currentDate);
     }
@@ -144,6 +146,7 @@ public class TaskManager {
         value += basicValue;
         value += dailyTaskContainer.getTotalValue();
         value += routineTaskContainer.getTotalValue();
+        value += targetTaskContainer.getTotalValue();
         value -= consumableContainer.getTotalConsumedValue();
 
         return value;
@@ -227,10 +230,6 @@ public class TaskManager {
     public int getActiveTargetTaskQuantity() {
 
         return 0;
-    }
-
-    public int getTargetTaskLimit() {
-        return targetTaskTopLimit;
     }
 
     public static boolean isDateChanged() {
