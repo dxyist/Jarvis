@@ -5,11 +5,47 @@
     tools:context="com.ecnu.leon.jarvis.model.reading.ReadingFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary">
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_above="@+id/tabs"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="阅读页面"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_books"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"></android.support.v7.widget.RecyclerView>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_book"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="阅读页"
-        android:textSize="20sp" />
-
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin" />
 </RelativeLayout>

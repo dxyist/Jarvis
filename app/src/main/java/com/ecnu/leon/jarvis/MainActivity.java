@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     static final int ACTION_ADD_ROUTINETASK_DIALOG = 7;
     static final int ACTION_CURRENT_DATE_CHANGE_DIALOG = 8;
 
-    public static GregorianCalendar latelyBaginCalendar = new GregorianCalendar(2017, 5, 1);
+    public static GregorianCalendar latelyBaginCalendar = new GregorianCalendar(2018, 4, 3);
     private static long latelyBaginCalendarMill;
 
 

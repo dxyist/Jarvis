@@ -24,7 +24,6 @@ public class DailyTaskContainer implements Serializable {
 
     // String使用2017-08-17格式
     private HashMap<String, ArrayList<DailyTask>> dailyTasksHashMap = new HashMap<String, ArrayList<DailyTask>>();
-    ;
     private static final String FILE_NAME = "DailyTask.dat";
 
     private Context context;

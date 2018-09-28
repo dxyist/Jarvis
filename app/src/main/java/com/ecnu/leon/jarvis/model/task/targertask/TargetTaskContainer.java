@@ -26,8 +26,8 @@ public class TargetTaskContainer {
     // 重要性对应额度列表
     public final static int TASK_VALUE_CEILING_TRIVIA = 2;
     public final static int TASK_VALUE_CEILING_NORMAL = 10;
-    public final static int TASK_VALUE_CEILING_IMPORTANT = 50;
-    public final static int TASK_VALUE_CEILING_VERY_IMPORTANT = 100;
+    public final static int TASK_VALUE_CEILING_IMPORTANT = 100;
+    public final static int TASK_VALUE_CEILING_VERY_IMPORTANT = 200;
 
     // 重要性对应数量列表
     public final static int TASK_QUANTITY_CEILING_TRIVIA = 10;

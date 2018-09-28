@@ -31,9 +31,6 @@ public class DailyTaskFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     RecyclerView recyclerView;
 
-
-    ArrayList<DailyTask> dailyTasks;
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
