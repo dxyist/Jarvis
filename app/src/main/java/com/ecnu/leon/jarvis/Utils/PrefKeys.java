@@ -6,6 +6,8 @@ public class PrefKeys {
     public static final String ACCOUNT_ID = "account_id";
 
     public static final String TASK_FIRST_TIME_LOAD = "task_first_time_load";
+    public static final String BOOK_FIRST_TIME_LOAD = "book_first_time_load";
+
     public static final String ROUTINE_TASK_FIRST_TIME_LOAD = "routine_task_first_time_load";
 
 

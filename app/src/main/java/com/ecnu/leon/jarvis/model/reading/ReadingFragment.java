@@ -86,7 +86,7 @@ public class ReadingFragment extends Fragment {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        recyclerView.setAdapter(new BookRecyclerViewAdapter(ReadingManager.getInstance(getContext()).getFakeBookList(), mListener, getContext()));
+        recyclerView.setAdapter(new BookRecyclerViewAdapter(ReadingManager.getInstance(getContext()).getFullBookList(), mListener, getContext()));
 
         FloatingActionButton fabButton = (FloatingActionButton) rootView.findViewById(R.id.fab_book);
         fabButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +113,7 @@ public class ReadingFragment extends Fragment {
                     }
                 }, 400);
 
-                final EditText limitDaysEditTest = (EditText) tempView.findViewById(R.id.edt_book_add_title);
+                final EditText limitDaysEditTest = (EditText) tempView.findViewById(R.id.edt_book_limit_days);
 
 
                 final int limitDays = Integer.valueOf(limitDaysEditTest.getText().toString().trim());
@@ -198,43 +198,11 @@ public class ReadingFragment extends Fragment {
                             }
                         }
 
-                        // 任务优先级加入逻辑限制
-                        String priorityString = "";
-                        switch (importance) {
-                            case TargetTask.TASK_PRIORITY_TRIVIA: {
-                                priorityString = "琐事";
-                                break;
-                            }
-                            case TargetTask.TASK_PRIORITY_NORMAL: {
-                                priorityString = "普通任务";
-                                break;
-                            }
-                            case TargetTask.TASK_PRIORITY_IMPORTANT: {
-                                priorityString = "重要任务";
-                                break;
-                            }
-                            case TargetTask.TASK_PRIORITY_VERY_IMPORTANT: {
-                                priorityString = "核心任务";
-                                break;
-                            }
-                        }
+                        ReadingManager.getInstance(getContext()).addNewBook(content, value, importance, tempLimitDays * 24 * 60 * 60 * 1000);
 
-                        if (TaskManager.getInstance(getContext()).getCurrentTargetTaskQuantityByPriority(importance) >= TargetTaskContainer.getQuantityCeilingByPriority(importance)) {
-                            Toast.makeText(getContext(), priorityString + "总量超过上限", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                            return;
-                        }
-
-                        if (value > TargetTaskContainer.getValueCeilingByPriority(importance)) {
-                            Toast.makeText(getContext(), priorityString + "可分配Value超过上限", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                            return;
-                        }
-
-                        TaskManager.getInstance(getContext()).addNewTargetTask(content, value, importance, tempLimitDays * 24 * 60 * 60 * 1000);
+//                        TaskManager.getInstance(getContext()).addNewTargetTask(content, value, importance, tempLimitDays * 24 * 60 * 60 * 1000);
 
                         refresh();
-
                         dialog.dismiss();
 
                     }
@@ -264,7 +232,7 @@ public class ReadingFragment extends Fragment {
 
     public void refresh() {
         if (recyclerView != null) {
-            recyclerView.setAdapter(new BookRecyclerViewAdapter(ReadingManager.getInstance(getContext()).getFakeBookList(), mListener, getContext()));
+            recyclerView.setAdapter(new BookRecyclerViewAdapter(ReadingManager.getInstance(getContext()).getFullBookList(), mListener, getContext()));
         }
     }
 

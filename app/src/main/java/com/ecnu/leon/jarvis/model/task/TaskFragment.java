@@ -35,6 +35,8 @@ import com.ecnu.leon.jarvis.R;
 import com.ecnu.leon.jarvis.Utils.DateUtil;
 import com.ecnu.leon.jarvis.Utils.PrefKeys;
 import com.ecnu.leon.jarvis.Utils.PrefUtils;
+import com.ecnu.leon.jarvis.model.reading.ReadingManager;
+import com.ecnu.leon.jarvis.model.reading.model.Book;
 import com.ecnu.leon.jarvis.model.task.consumable.ConsumableFragment;
 import com.ecnu.leon.jarvis.model.task.dailytask.DailyTaskFragment;
 import com.ecnu.leon.jarvis.model.task.routinetask.RoutineTaskFragment;
@@ -102,6 +104,7 @@ public class TaskFragment extends Fragment {
     public void onPause() {
         super.onPause();
         TaskManager.getInstance(getContext()).saveContent();
+        ReadingManager.getInstance(getContext()).saveContent();
     }
 
     @Override
