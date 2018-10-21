@@ -52,7 +52,7 @@ public class AccountManager {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
         try {
-            latelyBaginDate = df.parse("2018-09-17 00:00:00");
+            latelyBaginDate = df.parse("2018-10-17 00:00:00");
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <RelativeLayout
+        android:layout_width="280dp"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_dlg_dailytask_add_background"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/text_bookmark_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:text="插入书签"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:id="@+id/rlayout_bookmark_page_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_bookmark_add_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp">
+
+            <EditText
+                android:id="@+id/edt_bookmark_page_start"
+                android:layout_width="48sp"
+                android:layout_height="wrap_content"
+                android:hint="start"
+                android:inputType="number|numberDecimal" />
+
+            <EditText
+                android:id="@+id/edt_bookmark_page_end"
+                android:layout_width="48sp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/edt_bookmark_page_start"
+                android:hint="end"
+                android:inputType="number|numberDecimal" />
+
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="106dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/shape_button_cancel_dailytask_add_background"
+            android:text="取消"
+            android:textColor="#4d4d4d" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="106dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/btn_cancel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/shape_button_confirm_dailytask_add_background"
+            android:text="确定"
+            android:textColor="#03a9f4" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

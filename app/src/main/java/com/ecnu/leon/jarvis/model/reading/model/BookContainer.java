@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class BookContainer {
 
 
-    private ArrayList<Book> books = new ArrayList<>();
+    private ArrayList<Book> books;
 
     private static final String FILE_NAME = "Books.dat";
 
@@ -25,10 +25,21 @@ public class BookContainer {
 
     public BookContainer(Context context) {
         this.context = context;
+        this.books = new ArrayList<>();
     }
 
     public void addNewBook(Book book) {
         this.books.add(book);
+    }
+
+    public Book getBook(long id) {
+        for (Book book : this.books
+                ) {
+            if (book.getId() == id) {
+                return book;
+            }
+        }
+        return null;
     }
 
     public ArrayList<Book> getFullBookList() {

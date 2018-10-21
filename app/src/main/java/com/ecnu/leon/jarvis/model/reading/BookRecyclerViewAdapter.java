@@ -66,6 +66,13 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
         holder.readingStatusTextview.getPaint().setAntiAlias(true);
         holder.subtitleTextview.getPaint().setAntiAlias(true);
 
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BookActivity.startActivity(mContext, books.get(position).getId());
+            }
+        });
+
 
     }
 

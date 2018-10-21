@@ -37,7 +37,7 @@
         <activity android:name=".model.project.ui.ForecastActivity" />
         <activity android:name=".model.account.CategoryActivity" />
         <activity
-            android:name=".model.reading.ReadingActivity"
+            android:name=".model.reading.BookActivity"
             android:label="@string/title_activity_reading"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

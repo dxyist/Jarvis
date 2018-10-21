@@ -1,6 +1,10 @@
 package com.ecnu.leon.jarvis.model.reading.model;
 
+import com.cootek.feedsnews.model.http.FeedsInAppUpdateService;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,13 +14,17 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Book {
-    private ArrayList<BookMark> bookMarks = new ArrayList<>();
+public class Book implements Serializable {
+
+    private long id;
+
+    private ArrayList<Bookmark> bookMarks = new ArrayList<>();
     private String title;
     private String subtitle;
     private int importance;
     private int pageNumber;
     private int currentPage;
+
 
     // 剩余完成毫秒数
     private long deadlineTs = 0;
@@ -46,5 +54,34 @@ public class Book {
     public int getReadPageNumber() {
 
         return 0;
+    }
+
+    public boolean isBookmarkRangeValid(int startPage, int endPage) {
+
+        if (startPage <= 0) {
+            return false;
+        }
+        if (endPage > this.pageNumber) {
+            return false;
+        }
+        if (endPage < startPage) {
+            return false;
+        }
+        for (Bookmark bookmark : this.bookMarks
+                ) {
+            int bookmarkStartPage = bookmark.getStartPage();
+            int bookmarkEndPage = bookmark.getEndPage();
+            if (startPage > bookmarkStartPage && startPage < bookmarkEndPage) {
+                return false;
+            }
+            if (endPage > bookmarkStartPage && endPage < bookmarkEndPage) {
+                return false;
+            }
+            if (startPage <= bookmarkStartPage && endPage >= bookmarkEndPage) {
+                return false;
+            }
+        }
+        return true;
+
     }
 }

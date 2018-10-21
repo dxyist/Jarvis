@@ -59,6 +59,10 @@ public class ReadingManager {
         this.bookContainer.addNewBook(book);
     }
 
+    public Book getBook(long id) {
+        return this.bookContainer.getBook(id);
+    }
+
 
     public ArrayList<Book> getFullBookList() {
         return this.bookContainer.getFullBookList();
@@ -69,21 +73,18 @@ public class ReadingManager {
     }
 
     public void saveContent() {
-        if (isLoadSuccess) {
-            // daily save
-            if (bookContainer != null) {
-                try {
-                    bookContainer.save();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(context, "数据存储失败！！！！！", Toast.LENGTH_SHORT).show();
-                }
+        // daily save
+        if (bookContainer != null) {
+            try {
+                bookContainer.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(context, "数据存储失败！！！！！", Toast.LENGTH_SHORT).show();
             }
-
-        } else {
-            Toast.makeText(context, "当前数据不可写", Toast.LENGTH_SHORT).show();
         }
+
     }
+
 
     public void loadContent() {
         try {
@@ -91,7 +92,6 @@ public class ReadingManager {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             if (!(Boolean) PrefUtils.getKey(PrefKeys.TASK_FIRST_TIME_LOAD, true)) {
-                isLoadSuccess = false;
                 Toast.makeText(context, "数据读取失败！！！！！", Toast.LENGTH_SHORT).show();
             } else {
                 PrefUtils.setKey(PrefKeys.BOOK_FIRST_TIME_LOAD, false);
