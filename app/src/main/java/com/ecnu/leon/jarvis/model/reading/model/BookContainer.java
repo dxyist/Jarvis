@@ -2,6 +2,8 @@ package com.ecnu.leon.jarvis.model.reading.model;
 
 import android.content.Context;
 
+import com.ecnu.leon.jarvis.Utils.BackgroundExecutor;
+import com.ecnu.leon.jarvis.model.reading.ReadingManager;
 import com.ecnu.leon.jarvis.model.task.targertask.TargetTask;
 
 import java.io.IOException;
@@ -50,7 +52,7 @@ public class BookContainer {
 
         ArrayList<Book> fakeBooks = new ArrayList<>();
 
-        Book book = new Book("葵花宝典", "娘化首选", 1000, Book.BOOK_IMPORTANCE_NORMAL);
+        Book book = new Book(ReadingManager.getNewBookID(), "葵花宝典", "娘化首选", 1000, Book.BOOK_IMPORTANCE_NORMAL);
         fakeBooks.add(book);
         return fakeBooks;
     }

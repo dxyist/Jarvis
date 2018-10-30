@@ -16,6 +16,16 @@ public class Bookmark implements Serializable {
     private long id;
     private long bookID;
     private int reviewLevel;
+    private int importance;
     private int startPage;
     private int endPage;
+
+    public Bookmark(long id, long bookID, int importance, int startPage, int endPage) {
+        this.id = id;
+        this.bookID = bookID;
+        this.importance = importance;
+        this.reviewLevel = 0;
+        this.startPage = startPage;
+        this.endPage = endPage;
+    }
 }

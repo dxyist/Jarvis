@@ -105,18 +105,13 @@ public class BookActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         int start_page = Integer.valueOf(startEditText.getText().toString().trim());
                         int end_page = Integer.valueOf(endEditText.getText().toString().trim());
-                        boolean isValid = true;
-                        if (start_page <= 0) {
-                            Toast.makeText(BookActivity.this, "start_page < 0 !!!", Toast.LENGTH_SHORT).show();
-                            isValid = false;
-                        }
-                        if (end_page < start_page) {
-                            Toast.makeText(BookActivity.this, "end_page < start_page !!!", Toast.LENGTH_SHORT).show();
-                            isValid = false;
-                        }
+                        boolean isValid = ReadingManager.getInstance(BookActivity.this).getBook(bookId).isBookmarkRangeValid(start_page, end_page);
 
                         if (isValid) {
+                            ReadingManager.getInstance(BookActivity.this).getBook(bookId).addBookmark(start_page, end_page);
                             Toast.makeText(BookActivity.this, start_page + "to" + end_page, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(BookActivity.this, "invalid bookmark range !!!", Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss();
 

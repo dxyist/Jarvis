@@ -55,7 +55,7 @@ public class ReadingManager {
     }
 
     public void addNewBook(String bookName, int pageNumber, int importance, long deadlineTs) {
-        Book book = new Book(bookName, "subtitle", pageNumber, importance, deadlineTs);
+        Book book = new Book(getNewBookID(), bookName, "subtitle", pageNumber, importance, deadlineTs);
         this.bookContainer.addNewBook(book);
     }
 
@@ -99,6 +99,12 @@ public class ReadingManager {
 
         }
 
+    }
+
+    public static int getNewBookID() {
+        int id = (int) PrefUtils.getKey(PrefKeys.BOOK_ID, 0);
+        PrefUtils.setKey(PrefKeys.BOOK_ID, id + 1);
+        return id;
     }
 
 }

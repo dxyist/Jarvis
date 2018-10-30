@@ -3,6 +3,8 @@ package com.ecnu.leon.jarvis.Utils;
 
 public class PrefKeys {
     public static final String TASK_ID = "task_id";
+    public static final String BOOK_ID = "book_id";
+
     public static final String ACCOUNT_ID = "account_id";
 
     public static final String TASK_FIRST_TIME_LOAD = "task_first_time_load";

@@ -1,6 +1,7 @@
 package com.ecnu.leon.jarvis.model.reading.model;
 
 import com.cootek.feedsnews.model.http.FeedsInAppUpdateService;
+import com.ecnu.leon.jarvis.model.reading.ReadingManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +36,8 @@ public class Book implements Serializable {
     public final static int BOOK_IMPORTANCE_HIGH = 2;
     public final static int BOOK_IMPORTANCE_VERY_HIGH = 3;
 
-    public Book(String title, String subtitle, int pageNumber, int importance) {
+    public Book(long id, String title, String subtitle, int pageNumber, int importance) {
+        this.id = id;
         this.title = title;
         this.subtitle = subtitle;
         this.pageNumber = pageNumber;
@@ -43,7 +45,8 @@ public class Book implements Serializable {
         this.deadlineTs = 0;
     }
 
-    public Book(String title, String subtitle, int pageNumber, int importance, long deadlineTs) {
+    public Book(long id, String title, String subtitle, int pageNumber, int importance, long deadlineTs) {
+        this.id = id;
         this.title = title;
         this.subtitle = subtitle;
         this.pageNumber = pageNumber;
@@ -54,6 +57,17 @@ public class Book implements Serializable {
     public int getReadPageNumber() {
 
         return 0;
+    }
+
+    public boolean addBookmark(int startPage, int endPage) {
+        if (isBookmarkRangeValid(startPage, endPage)) {
+//            Bookmark bookmark = new Bookmark(ReadingManager.getNewBookID(), this.id, this.importance, startPage, endPage);
+            Bookmark bookmark = new Bookmark(ReadingManager.getNewBookID(), id, importance, startPage, endPage);
+            this.bookMarks.add(bookmark);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean isBookmarkRangeValid(int startPage, int endPage) {
